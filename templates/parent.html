@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Convergency of CRR model to Bsm model</title>
+    <title>Hull White model</title>
 
     <meta name="description" content="Etude de la convergence de BOPM to BSM">
     <meta name="author" content="LayoutIt!">
@@ -47,7 +47,7 @@
 
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                    </button> <a class="navbar-brand" href="/">Bopm2Bsm</a>
+                    </button> <a class="navbar-brand" href="/">Hull White</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -73,278 +73,26 @@
 
             <div class="page-header" style="margin: 1%">
                 <h1>
-                    Bopm2Bsm <small> Simulink the convergency of discret binomial pricing to Black scholes and merton model</small>
+                    Hull White <small> Numerical implementation of Hull White model using python</small>
                 </h1>
                 <p>
-                    The purpose of this website is to study the convergency of binomial option pricing model toward Black Scholes- Merton option pricing model.
-                </p>
+                    The purpose of this website is to implement the interest rate model Hull White
             </div>
             <br><br><br>
             <div class="row" style="margin: 1%">
-                <div class="col-md-2 border_1" style="height: 650px; padding: 1%;margin-right: 10px" >
-                    <h4>
-                        European option.
-                    </h4>
-                    <hr>
-                    <form role="form" id="computeForm" method="get" action="/" >
-
-
-                    <!--This is a comment. Comments are not displayed in the browser
-                        <div class="row">
-
-                            {% if bopmdata.op_nat == 0 %}
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_nat" id="op_nat" value="0" checked>
-                                    <label class="form-check-label" for="inlineRadio1">European</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_nat" id="op_nat" value="1">
-                                    <label class="form-check-label" for="inlineRadio1">American</label>
-                                </div>
-
-                            {% else %}
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_nat" id="op_nat" value="0" >
-                                    <label class="form-check-label" for="inlineRadio1">European</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_nat" id="op_nat" value="1" checked>
-                                    <label class="form-check-label" for="inlineRadio1">American</label>
-                                </div>
-                            {% endif %}
-                        </div>
-
--->
-                        <br>
-                        <div class="row">
-
-                            {% if bopmdata.op_type == 0 %}
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_type" id="op_type" value="0" checked>
-                                    <label class="form-check-label" for="inlineRadio1">Call</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_type" id="op_type" value="1">
-                                    <label class="form-check-label" for="inlineRadio1">Put</label>
-                                </div>
-
-                            {% else %}
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_type" id="op_type" value="0" >
-                                    <label class="form-check-label" for="inlineRadio1">Call</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="radio" name="op_type" id="op_type" value="1" checked>
-                                    <label class="form-check-label" for="inlineRadio1">Put</label>
-                                </div>
-                            {% endif %}
-                        </div>
-
-
-                        <br>
-
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">
-                                Current stock price
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" name="stock" value="{{ bopmdata.stock_price }}" step="0.01" />
-                                <span class="input-group-addon">$</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">
-                                Strike price
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" name="strike" value="{{ bopmdata.strike_price }}" step="0.01"/>
-                                <span class="input-group-addon">$</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">
-                                Volatility
-                            </label>
-                            <div class="input-group">
-                                <input  class="form-control" name="volatility"  value="{{ bopmdata.volatility }}"/>
-                                <span class="input-group-addon">%</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">
-                                Interest rate
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" name="rate"  value="{{ bopmdata.rate }}"/>
-                                <span class="input-group-addon">%</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">
-                                Maturity
-                            </label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" name="maturity"  value="{{ bopmdata.maturity }}" />
-                                <span class="input-group-addon">Years</span>
-                            </div></div>
-
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">
-                                Time steps
-                            </label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input  class="form-control" name="step_value"  value="{{ bopmdata.step_value }}" step="0.1"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-control" id="step_unit" name="step_unit">
-                                         {% if bopmdata.step_unit == 'month' %}
-                                           <option value="month" selected >months</option>
-                                         {% else %}
-                                            <option value="month">months</option>
-                                         {% endif %}
-
-                                         {% if bopmdata.step_unit == 'week' %}
-                                           <option value="weeks" selected >weeks</option>
-                                         {% else %}
-                                            <option value="weeks">weeks</option>
-                                         {% endif %}
-
-                                     {% if bopmdata.step_unit == 'days' %}
-                                           <option value="days" selected >days</option>
-                                         {% else %}
-                                            <option value="days">days</option>
-                                         {% endif %}
-
-                                     {% if bopmdata.step_unit == 'years' %}
-                                           <option value="years" selected >years</option>
-                                         {% else %}
-                                            <option value="years">years</option>
-                                         {% endif %}
-                                    </select>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                        <div class="container-fluid">
-
-                            <input type="submit" class="btn btn-success" style="width: 100%"> </input>
-                        </div>
-                    </form>
+                <div class="col-md-4 border_1" style="height: 650px; padding: 1%;margin-right: 10px" >
+                    
+        
                 </div>
-                <div class="col-md-7 border_1" style="height: 650px;padding: 10px;margin-right: 30px; margin-left: 30px">
+                <div class="col-md-1" style="height: 650px;padding: 10px;margin-right: 30px; margin-left: 30px">
 
                     <div id="chart_div" class="row" style="height: 97%;padding: 2%"></div>
 
                 </div>
 
-                <div class="col-md-2 border_1" style="height: 650px;padding: 5px">
+                <div class="col-md-6 border_1" style="height: 650px;padding: 5px">
 
-                    <div  style="width: 100%;height: 40%">
-                        <h5>Result analyze</h5>
-                        <table class="table table-bordered table-hover table-condensed">
-                            <tbody>
-                            <tr>
-                                <td>
-                                    BOPM
-                                </td>
-                                <td>
-                                    {{ bopmdata.bopm |floatformat:4}}$
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    BSM
-                                </td>
-                                <td>
-                                    {{ bopmdata.bsm|floatformat:4 }}$
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    Nbr of periods
-                                </td>
-                                <td>
-                                    {{ bopmdata.step }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    Diff
-                                </td>
-                                <td>
-                                    {{ bopmdata.diff|floatformat:4 }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    Delta(BSM)
-                                </td>
-                                <td>
-                                    {{ bopmdata.delta |floatformat:4 }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    u
-                                </td>
-                                <td>
-                                    {{ bopmdata.u |floatformat:4 }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    d
-                                </td>
-                                <td>
-                                    {{ bopmdata.d |floatformat:4}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5>Report</h5>
-                    <hr>
-                    <table class="table table-bordered table-hover table-condensed" style="width: 100%;overflow: scroll;height: 45%">
-                        <thead>
-                        <tr>
-                            <th>
-                                Steps
-                            </th>
-                            <th>
-                                BOPM
-                            </th>
-                            <th>
-                                BSM
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        {% for item in bopmdata.optionsteps  %}
-
-                            <tr>
-                                <td>
-                                    {{ item.step  }}
-                                </td>
-                                <td>
-                                    {{ item.bopm|floatformat:4}}$
-                                </td>
-                                <td>
-                                    {{ item.bsm|floatformat:4 }}$
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                    
                 </div>
             </div>
         </div>
