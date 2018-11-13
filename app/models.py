@@ -1,25 +1,18 @@
-from __future__ import unicode_literals
-from django.http import HttpResponse
-from rest_framework.renderers import JSONRenderer
 
 class Node():
-    def __init__(self, n,j, r, node_u,node_d, node_m):
-        self.n = n
+    def __init__(self,j,r, Pu,Pd, Pm):
         self.j = j
         self.r = r
-        self.node_u = node_u
-        self.node_d = node_d
-        self.node_m = node_m
+        self.Pu = Pu
+        self.Pd = Pd
+        self.Pm = Pm
 
     def as_json(self):
         return dict(
-            n = self.n,
             j = self.j,
             r = self.r,
-            node_u = self.node_u,
-            node_d = self.node_d,
-            node_m = self.node_m
+            Pm = self.Pm,
+            Pd = self.Pd,
+            Pu = self.Pu
         )
-
-
 

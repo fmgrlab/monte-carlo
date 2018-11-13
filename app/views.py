@@ -2,9 +2,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
-from app.hull_white import HullWhite
+from app.m2_hull_white import HullWhite2
 import json
-from django.core.serializers.json import DjangoJSONEncoder
 import numpy as np
 
 class JSONResponse(HttpResponse):
@@ -36,10 +35,10 @@ def compute(request):
     return JSONResponse(parseCompute(request).as_json())
 
 def parseCompute(request):
-    maturity = int(request.GET.get('maturity',4))
-    step = int(request.GET.get('step',4))
+    maturity = int(request.GET.get('maturity',3))
+    step = int(request.GET.get('step',3))
     alpha = float(request.GET.get('alpha',0.1))
     volatility = float(request.GET.get('volatility',0.01))
-    hw = HullWhite(maturity,volatility,alpha,step)
-    hw.init_data()
+    hw = HullWhite2(maturity,volatility,alpha,step)
+    hw.calculatePu()
     return hw
