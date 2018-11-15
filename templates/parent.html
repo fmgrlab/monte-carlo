@@ -147,7 +147,7 @@
                                         <label for="rate">Source des taux </label><br>
                                         <form>
                                             <input type="radio" name="gender" value="male" checked onchange="bloomberg()" > Bloomberg
-                                            <input type="radio" name="gender" value="female" style="margin-left: 10px" onchange="onManual" > Manual
+                                            <input type="radio" name="gender" value="female" style="margin-left: 10px" onchange="onManual()" > Manual
                                         </form>
                                     </div>
                                 </div>
@@ -266,6 +266,7 @@ function bloomberg() {
     for (var i = 0; i < maturity; i++) {
         var element = document.getElementById("rate" + i);
         element.value = "10";
+        element.disabled = true;
     }
 }
 
@@ -274,6 +275,7 @@ function onManual() {
     for (var i = 0; i < maturity; i++) {
         var element = document.getElementById("rate" + i);
         element.value = "";
+        element.disabled = false;
     }
 }
 </script>
