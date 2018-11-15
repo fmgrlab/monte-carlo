@@ -87,105 +87,136 @@
                 </div>
                 <br><br><br>
 
-                <form role="form" id="computeForm" method="get" action="/" >
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-2">
+                <form role="form" id="computeForm" method="get" action="/">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group row">
 
-                            <div class="form-group">
-                                <label for="maturity">
-                                    Maturity
-                                </label>
-                                <input type="number" step="1" min="1" max="50" class="form-control" value="{{ hw.maturity }}"
-                                       id="maturity" name="maturity"/>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="volatility">
-                                    Volatility
-                                </label>
-                                <input type="number" step="0.1" min="0.01" max="100" class="form-control" name="volatility" value="{{ hw.volatility }}"/>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="alpha">
-                                    Alpha
-                                </label>
-                                <input type="number" step="0.1" min="0.01" max="100" class="form-control"
-                                       id="alpha"name="alpha" value="{{ hw.alpha }}"/>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="stp">
-                                    Step
-                                </label>
-                                <input type="number" step="1" min="1" max="10" class="form-control"
-                                       id="step" name="step" value="{{ hw.step }}"/>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">
+                                    <div class="col-xs-3">
+                                        <label for="volatility">Volatilty</label>
+                                        <input class="form-control" type="number" step="0.1" min="0.01" max="100"
+                                               name="volatility" value="{{ hw.volatility }}">
+                                    </div>
 
-                                </label>
-                                <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1"/>
+                                    <div class="col-xs-3">
+                                        <label for="alpha">Alpha </label>
+                                        <input class="form-control" type="number" step="0.1" min="0.01" max="100"
+                                               id="alpha" name="alpha" value="{{ hw.alpha }}">
+                                    </div>
+
+                                    <div class="col-xs-3">
+                                        <label for="maturity">Maturity</label>
+                                        <input class="form-control" type="number" step="1" id="maturity" name="maturity"
+                                               value="{{ hw.maturity }}">
+                                    </div>
+
+                                    <div class="col-xs-3">
+                                        <label for="ex3">Period</label>
+                                        <select class="form-control" id="step" name="step">
+                                            {% if hw.step == 'month' %}
+                                                <option value="month" selected>Month</option>
+                                            {% else %}
+                                                <option value="month">Month</option>
+                                            {% endif %}
+
+                                            {% if hw.step == 'week' %}
+                                                <option value="week" selected>Week</option>
+                                            {% else %}
+                                                <option value="week">Week</option>
+                                            {% endif %}
+                                            {% if hw.step == 'days' %}
+                                                <option value="day" selected>Day</option>
+                                            {% else %}
+                                                <option value="day">Days</option>
+                                            {% endif %}
+
+                                            {% if hw.step == 'years' %}
+                                                <option value="year" selected>Year</option>
+                                            {% else %}
+                                                <option value="year">Year</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <div class="col-xs-12">
+                                        <label for="rate">Source des taux </label><br>
+                                        <form>
+                                            <input type="radio" name="gender" value="male" checked onchange="clearInput()" > Bloomberg
+                                            <input type="radio" name="gender" value="female" style="margin-left: 10px" onchange="addInput()"> Manual
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="col-md-5">
+                               <div class="form-group row" >
+                                   <div  style="overflow-x: scroll;width: 100%; white-space: nowrap;">
+                                   <span id="ratebar" ></span>
+                                       </div>
+
+                            </div>
                             </div>
                         </div>
+                <div class="row">
+                        <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1" />
                     </div>
-                </div>
+                    </div>
                 </form>
+
+
                 <div class="row" style="margin: 1%">
 
                     <div class="col-md-4" style="height: 650px;padding: 5px">
-                     <h5>Transition probability</h5>
-                        <table class="table table-bordered table-hover table-condensed" style="width: 100%;overflow: scroll;height: 45%">
-                        <thead>
-                        <tr>
-                            <th>
-                                j
-                            </th>
-                            <th>
-                                j&Delta;r
-                            </th>
-                            <th>
-                                Pu
-                            </th>
-                            <th>
-                                Pm
-                            </th>
-                            <th>
-                                Pd
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        {% for item in hw.nodes  %}
-
+                        <h5>Transition probability</h5>
+                        <table class="table table-bordered table-hover table-condensed"
+                               style="width: 100%;overflow: scroll;height: 45%">
+                            <thead>
                             <tr>
-                                <td>
-                                    {{ item.j  }}
-                                </td>
-                                <td>
-                                    {{ item.r|floatformat:4}}
-                                </td>
-                                <td>
-                                    {{ item.Pu|floatformat:4 }}
-                                </td>
-                            <td>
-                                    {{ item.Pm|floatformat:4 }}
-                                </td>
-                            <td>
-                                    {{ item.Pd|floatformat:4 }}
-                                </td>
+                                <th>
+                                    j
+                                </th>
+                                <th>
+                                    j&Delta;r
+                                </th>
+                                <th>
+                                    Pu
+                                </th>
+                                <th>
+                                    Pm
+                                </th>
+                                <th>
+                                    Pd
+                                </th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
 
+                            {% for item in hw.nodes %}
+
+                                <tr>
+                                    <td>
+                                        {{ item.j }}
+                                    </td>
+                                    <td>
+                                        {{ item.r|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.Pu|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.Pm|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.Pd|floatformat:4 }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
 
 
                     </div>
@@ -198,7 +229,35 @@
             {% endblock %}
 </div>
 </div>
+<script type="text/javascript">
+function addInput() {
+    var input = document.getElementById("maturity").value;
+    var foo = document.getElementById("ratebar");
+    for (var i = 0; i < 5; i++) {
 
+
+        var element = document.createElement("input");
+        element.setAttribute("type", "number");
+        element.setAttribute("name", "rate" + i);
+        element.setAttribute("step", "0.1");
+        element.setAttribute("id", "rate" + i);
+        element.setAttribute("style", "border: 2px solid #CCC; width:80px;height:40px; margin : 5px; padding: 5px");
+
+
+        var newlabel = document.createElement("Label");
+        newlabel.setAttribute("for","rate" + i);
+        newlabel.innerHTML = "Rate year "+(i+1);
+
+        foo.appendChild(newlabel);
+        foo.appendChild(element);
+
+    }
+}
+function clearInput() {
+    var foo = document.getElementById("ratebar");
+    while (foo.firstChild) foo.removeChild(foo.firstChild);
+}
+</script>
 
 </body>
 </html>
