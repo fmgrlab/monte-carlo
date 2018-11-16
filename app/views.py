@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+import matplotlib
+matplotlib.use('TkAgg')
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
@@ -8,6 +10,11 @@ import json
 import numpy as np
 from app.models import  HwInput
 from app.hw_engine import HullWhiteEngine
+from django.http import HttpResponse
+from matplotlib import pylab
+from pylab import *
+from io import BytesIO as StringIO
+import PIL, PIL.Image
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -51,3 +58,25 @@ def getInput(request):
     rates.append(11.50)
     rate = request.GET.getlist("rate",rates)
     return HwInput(volatility,maturity,alpha,period,rate, source_rate)
+
+
+
+def showimage(request):
+    t = arange(0.0, 2.0, 0.01)
+    s = sin(2 * pi * t)
+    plot(t, s, linewidth=1.0)
+
+    xlabel('time (s)')
+    ylabel('voltage (mV)')
+    title('About as simple as it gets, folks')
+    grid(True)
+
+    # Store image in a string buffer
+    buffer = StringIO()
+    canvas = pylab.get_current_fig_manager().canvas
+    canvas.draw()
+    pilImage = PIL.Image.frombytes("RGB", canvas.get_width_height(), canvas.tostring_rgb())
+    pilImage.save(buffer, "PNG")
+    pylab.close()
+
+    return HttpResponse(buffer.getvalue(), content_type="image/png")
