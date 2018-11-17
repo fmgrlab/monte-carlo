@@ -61,7 +61,7 @@ def getInput(request):
 
 
 
-def showimage(request):
+def draw_hull_white_tree(request):
     t = arange(0.0, 2.0, 0.01)
     s = sin(2 * pi * t)
     plot(t, s, linewidth=1.0)
@@ -70,8 +70,6 @@ def showimage(request):
     ylabel('voltage (mV)')
     title('About as simple as it gets, folks')
     grid(True)
-
-    # Store image in a string buffer
     buffer = StringIO()
     canvas = pylab.get_current_fig_manager().canvas
     canvas.draw()
