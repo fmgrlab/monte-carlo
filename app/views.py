@@ -31,7 +31,10 @@ class NumpyEncoder(json.JSONEncoder):
 def home(request):
     input = getInput(request)
     input_json = json.dumps(input.as_json(), cls=DjangoJSONEncoder)
-    return render(request, 'home.html', {"input": input, "input_json" : input_json})
+    hw = HullWhiteEngine(input)
+    hw_json  = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
+    hw.compute()
+    return render(request, 'home.html', {"input": input, "input_json" : input_json,"hw": hw, "hw_json" : hw_json})
 
 def documentation(request):
     return render(request, 'document.html')
@@ -42,7 +45,9 @@ def about(request):
 
 def compute(request):
     input  = getInput(request)
-    return JSONResponse(input.as_json())
+    hw = HullWhiteEngine(input)
+    hw.compute()
+    return JSONResponse(hw.as_json())
 
 def getInput(request):
     maturity = int(request.GET.get('maturity',3))

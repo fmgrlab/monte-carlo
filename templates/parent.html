@@ -195,17 +195,18 @@
 
                 <div class="row" style="margin: 1%">
 
-                    <div class="col-md-3" style="height: 650px;padding: 5px">
+                    <div class="col-md-4" style="height: 650px;padding: 5px">
                         <h5>Transition probability</h5>
                         <table class="table table-bordered table-hover table-condensed"
-                               style="width: 100%;overflow: scroll;height: 45%">
+                               style="width: 100%;overflow: scroll;height: 650px">
                             <thead>
                             <tr>
                                 <th>
-                                    j
+                                    i
                                 </th>
+
                                 <th>
-                                    j&Delta;r
+                                    j
                                 </th>
                                 <th>
                                     Pu
@@ -220,14 +221,16 @@
                             </thead>
                             <tbody>
 
-                            {% for item in hw.nodes %}
+                            {% for step in hw.steps %}
+
+                                {% for item in step.nodes %}
 
                                 <tr>
                                     <td>
-                                        {{ item.j }}
+                                        {{ item.i }}
                                     </td>
                                     <td>
-                                        {{ item.r|floatformat:4 }}
+                                        {{ item.j}}
                                     </td>
                                     <td>
                                         {{ item.Pu|floatformat:4 }}
@@ -239,6 +242,7 @@
                                         {{ item.Pd|floatformat:4 }}
                                     </td>
                                 </tr>
+                                {% endfor %}
                             {% endfor %}
                             </tbody>
                         </table>
@@ -246,7 +250,7 @@
 
                     </div>
                     <div class="col-md-1 " style="height: 650px;padding:1px"></div>
-                    <div class="col-md-8 border_1" style="height: 650px;padding: 5px">
+                    <div class="col-md-7 border_1" style="height: 650px;padding: 5px">
 
                     <img src="http://127.0.0.1:8000/hull_white_tree/">
                     </div>

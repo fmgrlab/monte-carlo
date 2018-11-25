@@ -1,16 +1,29 @@
-
-class Node():
-    def __init__(self,j,r, Pu,Pd, Pm):
-        self.j = j
-        self.r = r
-        self.Pu = Pu
-        self.Pd = Pd
-        self.Pm = Pm
+class Step():
+    def __init__(self, i):
+        self.i = i
+        self.nodes = list()
+        self.theta = list()
 
     def as_json(self):
         return dict(
+            i = self.i,
+            nodes=[ob.as_json() for ob in self.nodes]
+        )
+
+class Node():
+    def __init__(self):
+        self.i = 0
+        self.j = 0
+        self.theta = 0
+        self.Pu = 0
+        self.Pd = 0
+        self.Pm = 0
+
+    def as_json(self):
+        return dict(
+            i = self.i,
             j = self.j,
-            r = self.r,
+            theta = self.theta,
             Pm = self.Pm,
             Pd = self.Pd,
             Pu = self.Pu
