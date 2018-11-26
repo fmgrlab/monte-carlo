@@ -21,8 +21,8 @@ class HullWhiteEngine():
         rates.append(0.105)
         rates.append(0.11)
         rates.append(0.1125)
-        rates.append(0.1150)
-        return self.computeParam(1,3,0.14,0.1,rates)
+        rates.append(0.115)
+        return self.computeParam(1,3,0.014,0.1,rates)
 
 
 
@@ -33,12 +33,12 @@ class HullWhiteEngine():
         self.Q[0][0] = 1
         theta = np.zeros(N)
         mu = np.zeros((N, N * 2))
-        theta[0] = 2*R[2]+(sig*sig/2) - 2*r[0][0]
-        theta[1] = 0.1
-        theta[2] = 0.12
-        for i in range(1, N, 1):
+        theta[0] = 0.0201
+        theta[1] = 0.02126
+        theta[2] = 0.02236
+        for i in range(0, N, 1):
             step = Step(i)
-            for j in range(-i+1,i,1):
+            for j in range(-i,i+1,1):
                 node = Node()
                 node.i = i
                 node.j = j
