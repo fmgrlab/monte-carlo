@@ -41,7 +41,6 @@ def draw_hull_white_tree(request):
         for j in range(-i,i+1,1):
             text(i, j, "AA")
 
-
     xlim(0, 10)
     ylim(-15, 15)
     xticks(arange(10))
