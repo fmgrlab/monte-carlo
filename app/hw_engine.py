@@ -25,7 +25,6 @@ class HullWhiteEngine():
         return self.computeParam(1,3,0.014,0.1,rates)
 
 
-
     def computeParam(self,dt,N,sig,alpha,rate):
         R = rate
         dr = sig * math.sqrt(3 * dt)
@@ -45,13 +44,10 @@ class HullWhiteEngine():
                 mu[i][j] = (theta[i] - alpha * r[i][j])*dt
                 k = decide_branchin(r,mu,i,j)
                 eta = mu[i][j] + (j-k)*dr
-                print (eta*eta)
                 node.Pu =(sig*sig*dt+eta*eta)/(2*dr*dr)+ eta/(2*dr)
-                print (node.Pu)
                 node.Pm = 1 - (sig * sig * dt + eta * eta) / (dr * dr)
                 node.Pd = 1 - (node.Pm + node.Pu)
                 step.nodes.append(node)
-            step.theta.append(0.12)
             self.steps.append(step)
             #  sum = calculate_sum(i,r[i][j],dt,alpha)
             # theta[i+1] = (i+3)*R[i+3]/dt+ sig*sig*dt/2 + (1/dt)*math.log(sum)
@@ -74,8 +70,8 @@ def calculate_qui(self,Pu,Pm,Pd, i,j, d):
 def calculate_sum(self,i,r,dt,alpha):
     sum = 0
     for j in range(-i, i + 1, 1):
-        sum = sum + self.Q[i][j]*math.exp(-2*r[i][j]*dt + alpha*r[i][j]*dt*dt)
-    return  sum
+        sum +=  self.Q[i][j]*math.exp(-2*r[i][j]*dt + alpha*r[i][j]*dt*dt)
+    return sum
 
 
 def init_data(N,dt,ro,dr):
