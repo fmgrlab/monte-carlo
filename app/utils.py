@@ -1,8 +1,5 @@
 from __future__ import unicode_literals
 
-import matplotlib
-
-matplotlib.use('TkAgg')
 from rest_framework.renderers import JSONRenderer
 import json
 from django.http import HttpResponse
