@@ -39,12 +39,16 @@ class HullWhiteEngineNew():
 
         P = []
         for i in range(0, N, 1):
-            P[i] = math.exp(-R[i] * i * dt)
-        return P
+            P.append(math.exp(-R[i] * i * dt))
 
         # Initialise first node for simplified process
         r = np.zeros((N, 1+ N * 2))
         Q = np.zeros((N, 1+ N * 2))
+        d = np.zeros((N, N * 2))
+
+
+        d[0][0] = math.exp(-R[1] * dt)
+
         r[0][0] = 0
         Q[0][0] = 1
         a = []
@@ -55,15 +59,13 @@ class HullWhiteEngineNew():
             top_node = min(i, jmax)
             for j in range(-top_node,top_node+1,1):
                     r[i][j+top_node] = j*dr
+                    d[i][j+top_node] = math.exp(-r[i][j+top_node] * dt)
 
         # Calculate the probabilities of transition first central to top nodes
         pu = np.zeros((N, N * 2))
         pm = np.zeros((N, N * 2))
         pd = np.zeros((N, N * 2))
 
-        d = np.zeros((N, N * 2))
-
-        d[0][0] = math.exp(-R[1] * dt)
         for i in range(0, N, 1):
             top_node = min(i, jmax)
             for j in range(0, top_node+1, 1):
@@ -79,7 +81,7 @@ class HullWhiteEngineNew():
         # Calculate the other probability by reflection
         for i in range(0, N, 1):
             top_node = min(i, jmax)
-            for j in range(-top_node, 0, 1):
+            for j in range(0, top_node, 1):
                     pu[i][j] = pd[i][-j]
                     pm[i][j] = pm[i][-j]
                     pd[i][j] = pu[i][-j]
@@ -88,15 +90,12 @@ class HullWhiteEngineNew():
 
         for i in range(1,N,1):
             top_node = min(i, jmax)
-            # Update pure security prices
-            for j in range(-top_node,top_node+1,1):
-                    Q[i][j] = Q[i - 1][j+1] * pu[i-1][j+1] * d[i - 1][j+1]+ Q[i - 1][j] * pm[i-1][j] * d[i - 1][j]+ Q[i - 1][j - 1] * pd[i-1][j - 1] * d[i - 1][j - 1]
 
             sum = 0
-            for j in range(-top_node, top_node + 1, 1):
-               sum += Q[i][j]*math.exp(-j*dt*dr)
-            a[i] = (math.log(sum) - math.log(P[i+1]))/dt
-
-            for j in range(-top_node, top_node + 1, 1):
-                r[i][j] += a[i]
-                d[i][j] = math.exp(-r[i][j]*dt)
+            # Update pure security prices
+            for j in range(0,2*top_node+1,1):
+                    Q[i][j] = Q[i - 1][j+1] * pu[i-1][j+1] * d[i - 1][j+1]+ Q[i - 1][j] * pm[i-1][j] * d[i - 1][j]+ Q[i - 1][j - 1] * pd[i-1][j - 1] * d[i - 1][j - 1]
+                    sum += Q[i][j] * math.exp(-j * dt * dr)
+                    a.append((math.log(sum) - math.log(P[i + 1])) / dt)
+                    #r[i][j] += a[i]
+                    #d[i][j] = math.exp(-r[i][j] * dt)
