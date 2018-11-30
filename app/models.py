@@ -11,19 +11,17 @@ class Step():
         )
 
 class Node():
-    def __init__(self):
-        self.i = 0
-        self.j = 0
-        self.theta = 0
-        self.Pu = 0
-        self.Pd = 0
-        self.Pm = 0
+    def __init__(self,i = 0, j = 0, pu = None, pm = None,pd = None,):
+        self.i = i
+        self.j = j
+        self.Pu = pu
+        self.Pd = pd
+        self.Pm = pm
 
     def as_json(self):
         return dict(
             i = self.i,
             j = self.j,
-            theta = self.theta,
             Pm = self.Pm,
             Pd = self.Pd,
             Pu = self.Pu

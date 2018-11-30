@@ -22,7 +22,7 @@ class HullWhiteEngine():
         rates.append(0.11)
         rates.append(0.1125)
         rates.append(0.115)
-        return self.computeParam(1,3,0.014,0.1,rates)
+        return self.computeParam(1,2,0.014,0.1,rates)
 
 
     def computeParam(self,dt,N,sig,alpha,rate):
@@ -32,23 +32,27 @@ class HullWhiteEngine():
         self.Q[0][0] = 1
         theta = np.zeros(N)
         mu = np.zeros((N, N * 2))
+        pu = np.zeros((N, N * 2))
+        pm = np.zeros((N, N * 2))
+        pd = np.zeros((N, N * 2))
         theta[0] = 0.0201
         theta[1] = 0.02126
-        theta[2] = 0.02236
-        for i in range(0, N, 1):
+        for i in range(1 , N, 1):
             step = Step(i)
             for j in range(-i,i+1,1):
-                node = Node()
-                node.i = i
-                node.j = j
                 mu[i][j] = (theta[i] - alpha * r[i][j])*dt
-                k = decide_branchin(r,mu,i,j)
-                eta = mu[i][j] + (j-k)*dr
-                node.Pu =(sig*sig*dt+eta*eta)/(2*dr*dr)+ eta/(2*dr)
-                node.Pm = 1 - (sig * sig * dt + eta * eta) / (dr * dr)
-                node.Pd = 1 - (node.Pm + node.Pu)
+                esperance = mu[i][j] + j*dr
+                k = 0
+                print(k)
+                eta = mu[i][j] +(j-k)*dr
+                pu[i][j] =(sig*sig*dt+eta*eta)/(2*dr*dr)+ eta/(2*dr)
+                pm[i][j] = 1 - (sig * sig * dt + eta * eta) / (dr * dr)
+                pd[i][j] = 1 - (pm[i][j] + pu[i][j])
+                node = Node(i=i, j=j, theta=0, pu=pu[i][j], pm=pm[i][j], pd=pd[i][j])
                 step.nodes.append(node)
             self.steps.append(step)
+            return
+        return
             #  sum = calculate_sum(i,r[i][j],dt,alpha)
             # theta[i+1] = (i+3)*R[i+3]/dt+ sig*sig*dt/2 + (1/dt)*math.log(sum)
         return self.steps
@@ -62,6 +66,15 @@ def decide_branchin(r,mu,i,j):
             return j-1
         return j+1
 
+
+def decide_branchinProf(r, mu, i, j):
+    rj = r[i][j]
+    r_j1 = r[i][j+1]
+    if math.fabs(diff) < 0.002:
+        return j
+    if diff > r[i][j]:
+        return j - 1
+    return j + 1
 
 def calculate_qui(self,Pu,Pm,Pd, i,j, d):
     return  self.Q[i-1][1]*Pu*d[i-1][1]+ self.Q[i-1][0]*Pm*d[i-1][0]+ self.Q[i-1][-1]*Pd*d[i-1][-1]

@@ -6,6 +6,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from app.models import  HwInput
 from app.hw_engine import HullWhiteEngine
+from app.hw_eff_engine import HullWhiteEngineNew
 from django.http import HttpResponse
 from matplotlib import pylab
 from pylab import *
@@ -30,7 +31,7 @@ def about(request):
 
 def compute(request):
     input  = parseRequest(request)
-    hw = HullWhiteEngine(input)
+    hw = HullWhiteEngineNew(input)
     hw.compute()
     return utils.JSONResponse(hw.as_json())
 
