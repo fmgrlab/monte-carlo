@@ -21,7 +21,8 @@ class HullWhiteEngine():
         rates.append(0.11)
         rates.append(0.1125)
         rates.append(0.115)
-        return self.computeValue(1, 3, 0.014, 0.1, rates)
+        return 1
+        #return self.computeValue(1, 3, 0.014, 0.1, rates)
 
     def computeValue(self, dt, maturity, sig, alpha, R):
 
