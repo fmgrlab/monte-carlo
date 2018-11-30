@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 import matplotlib
-matplotlib.use('TkAgg')
+matplotlib.use("Agg")
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
 import json
