@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
+
 import matplotlib
+
 matplotlib.use("Agg")
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
 import json
-from app.models import  HwInput
+from app.models import HwInput
 from app.hw_engine import HullWhiteEngine
-from app.hw_eff_engine import HullWhiteEngineNew
 from django.http import HttpResponse
 from matplotlib import pylab
 from pylab import *
@@ -14,39 +15,42 @@ from io import BytesIO as StringIO
 import PIL, PIL.Image
 from app import utils
 
+
 def home(request):
     input = parseRequest(request)
     input_json = json.dumps(input.as_json(), cls=DjangoJSONEncoder)
     hw = HullWhiteEngine(input)
-    hw_json  = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
+    hw_json = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
     hw.compute()
-    return render(request, 'home.html', {"input": input, "input_json" : input_json,"hw": hw, "hw_json" : hw_json})
+    return render(request, 'home.html', {"input": input, "input_json": input_json, "hw": hw, "hw_json": hw_json})
+
 
 def documentation(request):
     return render(request, 'document.html')
+
 
 def about(request):
     return render(request, 'about.html')
 
 
 def compute(request):
-    input  = parseRequest(request)
+    input = parseRequest(request)
     hw = HullWhiteEngineNew(input)
     hw.compute()
     return utils.JSONResponse(hw.as_json())
 
+
 def draw_hull_white_tree(request):
     figure(figsize=(16, 16))
 
-    for i in range(0,10,1):
-        for j in range(-i,i+1,1):
+    for i in range(0, 10, 1):
+        for j in range(-i, i + 1, 1):
             text(i, j, "AA")
-
 
     xlim(0, 10)
     ylim(-15, 15)
     xticks(arange(10))
-    yticks(arange(-15,15,1))
+    yticks(arange(-15, 15, 1))
     xlabel('Maturity')
     ylabel('Rate')
     title('Hull White interest rate')

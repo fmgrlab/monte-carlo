@@ -121,13 +121,13 @@
                                                 <option value="day">Days</option>
                                             {% endif %}
 
-                                           {% if hw.step == 'week' %}
+                                            {% if hw.step == 'week' %}
                                                 <option value="week" selected>Week</option>
                                             {% else %}
                                                 <option value="week">Week</option>
                                             {% endif %}
 
-                                           {% if hw.step == 'month' %}
+                                            {% if hw.step == 'month' %}
                                                 <option value="month" selected>Month</option>
                                             {% else %}
                                                 <option value="month">Month</option>
@@ -139,7 +139,7 @@
                                                 <option value="quarter">Quarter</option>
                                             {% endif %}
 
-                                           {% if hw.step == 'semester' %}
+                                            {% if hw.step == 'semester' %}
                                                 <option value="semester" selected>Semester</option>
                                             {% else %}
                                                 <option value="semester">Semester</option>
@@ -163,32 +163,36 @@
                                         <label for="rate">Source des taux </label><br>
                                         <form>
                                             {% if input.source_rate == 'bloomberg' %}
-                                            <input type="radio" name="source_rate" value="bloomberg" checked onchange="bloomberg()" > Bloomberg
-                                            <input type="radio" name="source_rate" value="manual" style="margin-left: 10px" onchange="onManual()" > Manual
+                                                <input type="radio" name="source_rate" value="bloomberg" checked
+                                                       onchange="bloomberg()"> Bloomberg
+                                                <input type="radio" name="source_rate" value="manual"
+                                                       style="margin-left: 10px" onchange="onManual()"> Manual
                                             {% else %}
-                                            <input type="radio" name="source_rate" value="bloomberg"  onchange="bloomberg()" > Bloomberg
-                                            <input type="radio" name="source_rate" value="manual" checked style="margin-left: 10px" onchange="onManual()" > Manual
+                                                <input type="radio" name="source_rate" value="bloomberg"
+                                                       onchange="bloomberg()"> Bloomberg
+                                                <input type="radio" name="source_rate" value="manual" checked
+                                                       style="margin-left: 10px" onchange="onManual()"> Manual
                                             {% endif %}
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                          <div class="col-md-5">
-                               <div class="form-group row" >
-                                   <div  style="overflow-x: scroll;width: 100%; white-space: nowrap;">
-                                   <span id="ratebar" ></span>
-                                       </div>
+                            <div class="col-md-5">
+                                <div class="form-group row">
+                                    <div style="overflow-x: scroll;width: 100%; white-space: nowrap;">
+                                        <span id="ratebar"></span>
+                                    </div>
 
-                            </div>
+                                </div>
                             </div>
                         </div>
-                <div class="row" style="margin: 20px">
-                    <div class="col-md-3"></div>
-                        <div class="col-md-6">
-                        <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1" />
+                        <div class="row" style="margin: 20px">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1"/>
+                            </div>
+                            <div class="col-md-3"></div>
                         </div>
-                        <div class="col-md-3"></div>
-                    </div>
                     </div>
                 </form>
 
@@ -198,7 +202,7 @@
 
                     <div class="col-md-12 border_1" style="height: 650px;padding: 5px">
 
-                    <img src="http://127.0.0.1:8000/hull_white_tree/">
+                        <img src="http://127.0.0.1:8000/hull_white_tree/">
                     </div>
                 </div>
                 </div>
@@ -213,63 +217,63 @@
 
 <script type="text/javascript">
 
-    window.onload = function() {
+    window.onload = function () {
         addInput();
         var input_js = ({{ input_json|safe }})
-         if (input_js.source_rate.startsWith("b")){
-           bloomberg();
-        }else{
+        if (input_js.source_rate.startsWith("b")) {
+            bloomberg();
+        } else {
             onManual();
         }
 
-   }
-
-function addInput() {
-    var foo = document.getElementById("ratebar");
-    while (foo.firstChild) foo.removeChild(foo.firstChild);
-    var maturity = document.getElementById("maturity").value;
-    for (var i = 0; i < maturity; i++) {
-        var element = document.createElement("input");
-        element.setAttribute("type", "number");
-        element.setAttribute("name", "rate");
-        element.setAttribute("step", "0.1");
-        element.setAttribute("id", "rate" + i);
-        element.setAttribute("style", "border: 2px solid #CCC; width:80px;height:40px; margin : 10px; padding: 10px");
-
-        var newlabel = document.createElement("Label");
-        newlabel.setAttribute("for","rate" + i);
-        newlabel.innerHTML = "Rate year "+(i+1);
-        foo.appendChild(newlabel);
-        foo.appendChild(element);
     }
-}
 
-function bloomberg() {
-    var maturity = document.getElementById("maturity").value;
-    var input_js = ({{ input_json|safe }})
-    console.log(input_js.source_rate.startsWith("b"));
-    for (var i = 0; i < maturity; i++) {
-        var element = document.getElementById("rate" + i);
-        if (input_js.source_rate.startsWith("b")){
-          element.value = input_js.rate[i];
-        }else{
-            element.value = "";
+    function addInput() {
+        var foo = document.getElementById("ratebar");
+        while (foo.firstChild) foo.removeChild(foo.firstChild);
+        var maturity = document.getElementById("maturity").value;
+        for (var i = 0; i < maturity; i++) {
+            var element = document.createElement("input");
+            element.setAttribute("type", "number");
+            element.setAttribute("name", "rate");
+            element.setAttribute("step", "0.1");
+            element.setAttribute("id", "rate" + i);
+            element.setAttribute("style", "border: 2px solid #CCC; width:80px;height:40px; margin : 10px; padding: 10px");
+
+            var newlabel = document.createElement("Label");
+            newlabel.setAttribute("for", "rate" + i);
+            newlabel.innerHTML = "Rate year " + (i + 1);
+            foo.appendChild(newlabel);
+            foo.appendChild(element);
         }
     }
-}
 
-function onManual() {
-     var maturity = document.getElementById("maturity").value;
-    var input_js = ({{ input_json|safe }})
-    for (var i = 0; i < maturity; i++) {
-        var element = document.getElementById("rate" + i);
-        if (input_js.source_rate.startsWith("m")){
-            element.value = input_js.rate[i];
-        }else{
-            element.value = "";
+    function bloomberg() {
+        var maturity = document.getElementById("maturity").value;
+        var input_js = ({{ input_json|safe }})
+        console.log(input_js.source_rate.startsWith("b"));
+        for (var i = 0; i < maturity; i++) {
+            var element = document.getElementById("rate" + i);
+            if (input_js.source_rate.startsWith("b")) {
+                element.value = input_js.rate[i];
+            } else {
+                element.value = "";
+            }
         }
     }
-}
+
+    function onManual() {
+        var maturity = document.getElementById("maturity").value;
+        var input_js = ({{ input_json|safe }})
+        for (var i = 0; i < maturity; i++) {
+            var element = document.getElementById("rate" + i);
+            if (input_js.source_rate.startsWith("m")) {
+                element.value = input_js.rate[i];
+            } else {
+                element.value = "";
+            }
+        }
+    }
 </script>
 
 </body>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,24 +15,28 @@
 
 </head>
 <style>
-    table ,tr td{
-        border:1px solid red
+    table, tr td {
+        border: 1px solid red
     }
+
     tbody {
-        display:block;
-        max-height:90%;
-        overflow-y:scroll;
+        display: block;
+        max-height: 90%;
+        overflow-y: scroll;
     }
+
     thead, tbody tr {
-        display:table;
-        width:100%;
-        table-layout:fixed;
+        display: table;
+        width: 100%;
+        table-layout: fixed;
     }
+
     thead {
-        width:100%;
+        width: 100%;
     }
+
     table {
-        width:100%;
+        width: 100%;
     }
 
 </style>
@@ -45,9 +48,12 @@
             <nav class="navbar navbar-default navbar-inverse" role="navigation">
                 <div class="navbar-header">
 
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                    </button> <a class="navbar-brand" href="/">Hull White</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Hull White</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -69,73 +75,78 @@
 
             <br><br><br>
 
-        {% block content %}
+            {% block content %}
 
-            <div class="page-header" style="margin: 1%">
-                <h1>
-                    Hull White <small> Numerical implementation of Hull White model using python</small>
-                </h1>
-                <p>
-                    The purpose of this website is to implement the interest rate model Hull White
-            </div>
-            <br><br><br>
+                <div class="page-header" style="margin: 1%">
+                    <h1>
+                        Hull White
+                        <small> Numerical implementation of Hull White model using python</small>
+                    </h1>
+                    <p>
+                        The purpose of this website is to implement the interest rate model Hull White
+                </div>
+                <br><br><br>
 
-            <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-2">
-		<div class="form-group">
-					<label for="exampleInputEmail1">
-						Maturity
-					</label>
-					<input type="number" step="1"  min="1" max="50" class="form-control" id="exampleInputEmail1" />
-				</div>
-		</div>
-        <div class="col-md-2">
-		<div class="form-group">
-					<label for="exampleInputEmail1">
-						Volatility (%)
-					</label>
-					<input type="number" step="0.1"  min="0.01" max="100" class="form-control" id="exampleInputEmail1" />
-				</div>
-		</div>
-        <div class="col-md-2">
-		<div class="form-group">
-					<label for="exampleInputEmail1">
-                        Alpha
-					</label>
-					<input type="number" step="0.1"  min="0.01" max="100" class="form-control" id="exampleInputEmail1" />
-				</div>
-		</div>
-         <div class="col-md-3">
-		<div class="form-group">
-					<label for="exampleInputEmail1">
-                        Step
-					</label>
-					<input type="number" step="0"  min="0.01" max="100" class="form-control" id="exampleInputEmail1" />
-				</div>
-		</div>
-        <div class="col-md-3">
-		<div class="form-group">
-					<label for="exampleInputEmail1">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">
+                                    Maturity
+                                </label>
+                                <input type="number" step="1" min="1" max="50" class="form-control"
+                                       id="exampleInputEmail1"/>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">
+                                    Volatility (%)
+                                </label>
+                                <input type="number" step="0.1" min="0.01" max="100" class="form-control"
+                                       id="exampleInputEmail1"/>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">
+                                    Alpha
+                                </label>
+                                <input type="number" step="0.1" min="0.01" max="100" class="form-control"
+                                       id="exampleInputEmail1"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">
+                                    Step
+                                </label>
+                                <input type="number" step="0" min="0.01" max="100" class="form-control"
+                                       id="exampleInputEmail1"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">
 
-					</label>
-					<input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1" />
-				</div>
-		</div>
-	</div>
-</div>
-
-            <div class="row" style="margin: 1%">
-
-                <div class="col-md-12 border_1" style="height: 650px;padding: 5px">
-
-                    <div id="chart_div" class="row" style="height: 97%;padding: 2%"></div>
+                                </label>
+                                <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-{%endblock %}
+                <div class="row" style="margin: 1%">
+
+                    <div class="col-md-12 border_1" style="height: 650px;padding: 5px">
+
+                        <div id="chart_div" class="row" style="height: 97%;padding: 2%"></div>
+                    </div>
+
+                </div>
+                </div>
+                </div>
+            {% endblock %}
 </div>
 </div>
 
@@ -147,37 +158,37 @@
 <script type="text/javascript">
 
     google.charts.load('current', {packages: ['corechart', 'line']});
-google.charts.setOnLoadCallback(drawTrendlines);
+    google.charts.setOnLoadCallback(drawTrendlines);
 
-function drawTrendlines() {
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'X');
-      data.addColumn('number', 'Dogs');
-      for (var i = 0 ; i < 1 ; i++){
-          for (var j = 0 ; j < 3 ; j++) {
-              data.addRows([[i, 0], [i + 1, 50]]);
-              data.addRows([[i, 0], [i + 1, 0]]);
-              data.addRows([[i, 0], [i + 1, -50]]);
-          }
+    function drawTrendlines() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'X');
+        data.addColumn('number', 'Dogs');
+        for (var i = 0; i < 1; i++) {
+            for (var j = 0; j < 3; j++) {
+                data.addRows([[i, 0], [i + 1, 50]]);
+                data.addRows([[i, 0], [i + 1, 0]]);
+                data.addRows([[i, 0], [i + 1, -50]]);
+            }
 
-      var options = {
-          title: "Tood",
-        width: '100%',
-        height: '100%',
-        hAxis: {
-          title: 'Maturity'
-        },
-        vAxis: {
-          title: 'Rate'
-        },
-        colors: ['#AB0D06', '#007329'],
+            var options = {
+                title: "Tood",
+                width: '100%',
+                height: '100%',
+                hAxis: {
+                    title: 'Maturity'
+                },
+                vAxis: {
+                    title: 'Rate'
+                },
+                colors: ['#AB0D06', '#007329'],
 
-      };
+            };
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-      }
-      }
-    </script>
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    }
+</script>
 </body>
 </html>
