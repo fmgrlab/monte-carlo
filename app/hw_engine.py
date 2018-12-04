@@ -54,9 +54,13 @@ class HullWhiteEngine():
 
         for i in range(0, N, 1):
             top_node = min(i, jmax)
+            step_i = Step(i)
             for j in range(-top_node, top_node + 1, 1):
-                r[i][j + top_node] = j * dr
-                d[i][j + top_node] = math.exp(-r[i][j + top_node] * dt)
+                r[i][j] = j * dr
+                d[i][j] = math.exp(-r[i][j] * dt)
+                node = Node(i, j, r[i][j])
+                step_i.nodes.append(node)
+            self.steps.append(step_i)
 
         # Calculate the probabilities of transition first central to top nodes
         pu = np.zeros((N, N * 2))
@@ -64,41 +68,42 @@ class HullWhiteEngine():
         pd = np.zeros((N, N * 2))
 
         for i in range(0, N, 1):
-            step_i = Step(i)
+            step_i =  self.steps[i]
             top_node = min(i, jmax)
             for j in range(0, top_node + 1, 1):
+                print(step_i.nodes[j])
                 if j == jmax:
                     pu[i][j] = 7.0 / 6.0 + (j * j * M * M - 3 * j * M) / 2
                     pm[i][j] = -1.0 / 3.0 - (j * j * M * M - 2 * j * M)
                     pd[i][j] = 1.0 - (pm[i][j] + pu[i][j])
+
                 else:
                     pu[i][j] = 1.0 / 6.0 + (j * j * M * M + j * M) / 2
                     pm[i][j] = 2.0 / 3.0 - (j * j * M * M)
                     pd[i][j] = 1.0 - (pm[i][j] + pu[i][j])
-                node = Node(i,j,pu=pu[i][j] ,pm=pm[i][j] ,pd=pd[i][j] )
-                step_i.nodes.append(node)
-            self.steps.append(step_i)
+                step_i.nodes[j].pu = pu[i][j]
+                step_i.nodes[j].pm = pm[i][j]
+                step_i.nodes[j].pd = pd[i][j]
+
 
         # Calculate the other probability by reflection
         for i in range(0, N, 1):
-            step_i = self.steps[i]
             top_node = min(i, jmax)
-            for j in range(-top_node, -1, 1):
+            for j in range(-top_node, 0, 1):
                 pu[i][j] = pd[i][-j]
                 pm[i][j] = pm[i][-j]
                 pd[i][j] = pu[i][-j]
-                node = Node(i, j, pu=pu[i][j], pm=pm[i][j], pd=pd[i][j])
-                step_i.nodes.append(node)
+                step_i.nodes[j].pu = pu[i][j]
+                step_i.nodes[j].pm = pm[i][j]
+                step_i.nodes[j].pd = pd[i][j]
 
       # Update state prices, find time-varying drift and displace nodes
         """"
         for i in range(1, N, 1):
             top_node = min(i, jmax)
-
             sum = 0
             # Update pure security prices
             for j in range(0, 2 * top_node + 1, 1):
-                k = 0
                 Q[i][j] = Q[i - 1][j + 1] * pu[i - 1][j + 1] * math.exp(-(a[i]+k*dr)*dt) +\
                           Q[i - 1][j] * pm[i - 1][j] * math.exp(-(a[i]+k*dr)*dt) +\
                           Q[i - 1][j - 1] * pd[i - 1][j - 1] * math.exp(-(a[i]+k*dr)*dt)

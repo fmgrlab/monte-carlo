@@ -41,16 +41,16 @@ def compute(request):
 
 
 def draw_hull_white_tree(request):
-    figure(figsize=(16, 16))
+    figure(figsize=(9, 7))
 
     for i in range(0, 10, 1):
         for j in range(-i, i + 1, 1):
             text(i, j, "AA")
 
-    xlim(0, 10)
-    ylim(-15, 15)
-    xticks(arange(10))
-    yticks(arange(-15, 15, 1))
+    xlim(0, 6)
+    ylim(-6, 6)
+    xticks(arange(15))
+    yticks(arange(-10, 15, 1))
     xlabel('Maturity')
     ylabel('Rate')
     title('Hull White interest rate')

@@ -200,9 +200,72 @@
                 <div class="row" style="margin: 1%">
 
 
-                    <div class="col-md-12 border_1" style="height: 650px;padding: 5px">
+                    <div class="col-md-3" style="height: 650px;padding: 5px;border: 1px solid #ecf0f1" >
+                            <h5>Transition probability</h5>
+                        <table class="table table-bordered table-hover table-condensed"
+                               style="width: 100%;overflow: scroll;height: 45%">
+                            <thead>
+                            <tr>
+                                <th>
+                                    j
+                                </th>
+                                <th>
+                                    x
+                                </th>
+                                <th>
+                                    r
+                                </th>
+                                <th>
+                                    Pu
+                                </th>
+                                <th>
+                                    Pm
+                                </th>
+                                <th>
+                                    Pd
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                        <img src="http://127.0.0.1:8000/hull_white_tree/">
+                            {% for step in hw.steps %}
+
+                                {% for item in step.nodes %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ item.j}}
+                                    </td>
+                                    <td>
+                                        {{ item.x|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.r|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.pu|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.pm|floatformat:4 }}
+                                    </td>
+                                    <td>
+                                        {{ item.pd|floatformat:4 }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+
+                 <div class="col-md-1"></div>
+
+                    <div class="col-md-8" style="height: 650px;padding: 5px;background-color: #ecf0f1">
+                        <img src="http://127.0.0.1:8000/hull_white_tree/" >
                     </div>
                 </div>
                 </div>
