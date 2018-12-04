@@ -35,7 +35,7 @@ def about(request):
 
 def compute(request):
     input = parseRequest(request)
-    hw = HullWhiteEngineNew(input)
+    hw = HullWhiteEngine(input)
     hw.compute()
     return utils.JSONResponse(hw.as_json())
 
