@@ -36,7 +36,7 @@ class HullWhiteEngine():
         # Initialize yield curve
 
         P = []
-        for i in range(0, N, 1):
+        for i in range(0, N+1, 1):
             P.append(math.exp(-R[i] * i * dt))
 
         # Initialise first node for simplified process
@@ -68,7 +68,7 @@ class HullWhiteEngine():
         pd = np.zeros((N, N * 2))
 
         for i in range(0, N, 1):
-            step_i =  self.steps[i]
+            step_i = self.steps[i]
             top_node = min(i, jmax)
             for j in range(0, top_node + 1, 1):
                 print(step_i.nodes[j])
@@ -97,18 +97,24 @@ class HullWhiteEngine():
                 step_i.nodes[j].pm = pm[i][j]
                 step_i.nodes[j].pd = pd[i][j]
 
-      # Update state prices, find time-varying drift and displace nodes
-        """"
+        # Update state prices, find time-varying drift and displace nodes
+
         for i in range(1, N, 1):
             top_node = min(i, jmax)
+            step_i = self.steps[i]
             sum = 0
-            # Update pure security prices
-            for j in range(0, 2 * top_node + 1, 1):
-                Q[i][j] = Q[i - 1][j + 1] * pu[i - 1][j + 1] * math.exp(-(a[i]+k*dr)*dt) +\
-                          Q[i - 1][j] * pm[i - 1][j] * math.exp(-(a[i]+k*dr)*dt) +\
-                          Q[i - 1][j - 1] * pd[i - 1][j - 1] * math.exp(-(a[i]+k*dr)*dt)
+            #Update pure security prices
+            for j in range(-top_node, top_node + 1, 1):
+                Q[i][j] = Q[i - 1][j + 1] * pu[i][j+1] * d[i-1][j+1] + Q[i - 1][j] * pm[i][j] *  d[i-1][j] + Q[i - 1][j - 1] * pd[i][j-1]*d[i-1][j+1]
                 sum += Q[i][j] * math.exp(-j * dt * dr)
                 a.append((math.log(sum) - math.log(P[i + 1])) / dt)
-                # r[i][j] += a[i]
-                # d[i][j] = math.exp(-r[i][j] * dt)
-        """
+
+            sum = 0
+            for j in range(-top_node, top_node + 1, 1):
+                    sum += Q[i][j] * math.exp(-j * dt * dr)
+            a.append((math.log(sum) - math.log(P[i + 1])) / dt)
+
+            for j in range(-top_node, top_node + 1, 1):
+                  r[i][j] += a[i]
+                  d[i][j] = math.exp(-r[i][j] * dt)
+                  step_i.nodes[j].r = r[i][j]
