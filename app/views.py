@@ -15,7 +15,6 @@ from pylab import *
 from io import BytesIO as StringIO
 import PIL, PIL.Image
 from app import utils
-from  app.models import Hw_Step
 
 def home(request):
     input = parseRequest(request)
@@ -23,10 +22,6 @@ def home(request):
     hw = HullWhiteEngine(input)
     hw.compute()
     hw_json = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
-    Hw_Step.objects.all().delete()
-    hw_step = Hw_Step()
-    hw_step.data = hw_json
-    hw_step.save()
     html_fig = draw_data(hw)
     return render(request, 'home.html', {"input": input, "input_json": input_json, "hw": hw, "hw_json": hw_json,'div_figure' : html_fig})
 
