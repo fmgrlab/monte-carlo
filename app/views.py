@@ -6,7 +6,7 @@ matplotlib.use("Agg")
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
 import json
-from app.models import HwInput
+from app.objects import HwInput
 from app.hw_engine import HullWhiteEngine
 from django.http import HttpResponse
 from matplotlib import pylab
@@ -14,14 +14,18 @@ from pylab import *
 from io import BytesIO as StringIO
 import PIL, PIL.Image
 from app import utils
-
+from  app.models import Hw_Step
 
 def home(request):
     input = parseRequest(request)
     input_json = json.dumps(input.as_json(), cls=DjangoJSONEncoder)
     hw = HullWhiteEngine(input)
-    hw_json = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
     hw.compute()
+    hw_json = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
+    Hw_Step.objects.all().delete()
+    hw_step = Hw_Step()
+    hw_step.data = hw_json
+    hw_step.save()
     return render(request, 'home.html', {"input": input, "input_json": input_json, "hw": hw, "hw_json": hw_json})
 
 
@@ -42,11 +46,11 @@ def compute(request):
 
 def draw_hull_white_tree(request):
     figure(figsize=(9, 7))
-
-    for i in range(0, 10, 1):
-        for j in range(-i, i + 1, 1):
-            text(i, j, "AA")
-
+    hw_step = Hw_Step.objects.get(pk=1)
+    hwdata = json.loads(hw_step.data)
+    for stp in hwdata['steps']:
+        for node in stp['nodes']:
+            text(node["i"],node["j"],node["label"])
     xlim(0, 6)
     ylim(-6, 6)
     xticks(arange(15))

@@ -1,7 +1,7 @@
 import math
 
 import numpy as np
-from app.models import Step,Node
+from app.objects import Step,Node
 
 
 class HullWhiteEngine():
@@ -22,9 +22,9 @@ class HullWhiteEngine():
         rates.append(0.11)
         rates.append(0.1125)
         rates.append(0.115)
-        return self.computeValue(1, 3, 0.014, 0.1, rates)
+        return self.compute_value(1, 3, 0.014, 0.1, rates)
 
-    def computeValue(self, dt, maturity, sig, alpha, R):
+    def compute_value(self, dt, maturity, sig, alpha, R):
 
         # Precalculate constants
 
@@ -71,7 +71,6 @@ class HullWhiteEngine():
             step_i = self.steps[i]
             top_node = min(i, jmax)
             for j in range(0, top_node + 1, 1):
-                print(step_i.nodes[j])
                 if j == jmax:
                     pu[i][j] = 7.0 / 6.0 + (j * j * M * M - 3 * j * M) / 2
                     pm[i][j] = -1.0 / 3.0 - (j * j * M * M - 2 * j * M)
