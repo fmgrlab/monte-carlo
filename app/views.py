@@ -10,6 +10,7 @@ from app.objects import HwInput
 from app.hw_engine import HullWhiteEngine
 from django.http import HttpResponse
 from matplotlib import pylab
+import mpld3
 from pylab import *
 from io import BytesIO as StringIO
 import PIL, PIL.Image
@@ -26,8 +27,8 @@ def home(request):
     hw_step = Hw_Step()
     hw_step.data = hw_json
     hw_step.save()
-    return render(request, 'home.html', {"input": input, "input_json": input_json, "hw": hw, "hw_json": hw_json})
-
+    html_fig = draw_data(hw)
+    return render(request, 'home.html', {"input": input, "input_json": input_json, "hw": hw, "hw_json": hw_json,'div_figure' : html_fig})
 
 def documentation(request):
     return render(request, 'document.html')
@@ -44,13 +45,25 @@ def compute(request):
     return utils.JSONResponse(hw.as_json())
 
 
-def draw_hull_white_tree(request):
+def draw_data(hw):
+    fig, ax = plt.subplots()
+    plot([0, 3], [0, 6])
+    ax.set_xlim(0, 6)
+    ax.set_ylim(-6,6)
+    ax.set_xlabel('Maturity')
+    ax.set_ylabel('Rate')
+    ax.grid(True)
+    html_fig = mpld3.fig_to_html(fig, template_type='general')
+    plt.close(fig)
+    return html_fig
+
+def draw_hull_white_treOLDe(request):
     figure(figsize=(9, 7))
     hw_step = Hw_Step.objects.get(pk=1)
     hwdata = json.loads(hw_step.data)
     for stp in hwdata['steps']:
         for node in stp['nodes']:
-            text(node["i"],node["j"],node["label"])
+            plot([node["i"],node["x"]],[node["i"],node["x"]])
     xlim(0, 6)
     ylim(-6, 6)
     xticks(arange(15))
@@ -65,7 +78,6 @@ def draw_hull_white_tree(request):
     pilImage = PIL.Image.frombytes("RGB", canvas.get_width_height(), canvas.tostring_rgb())
     pilImage.save(buffer, "PNG")
     pylab.close()
-
     return HttpResponse(buffer.getvalue(), content_type="image/png")
 
 
