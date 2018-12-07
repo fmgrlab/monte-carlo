@@ -8,6 +8,8 @@ class HullWhiteEngine():
     def __init__(self, hwinput):
         self.hwinput = hwinput
         self.steps = list()
+        self.r = None
+
 
     def as_json(self):
         return dict(
@@ -26,12 +28,14 @@ class HullWhiteEngine():
 
     def compute_value(self, dt, maturity, sig, alpha, R):
 
-        # Precalculate constants
+        # Pre-calculate constants
 
         N = int(maturity / dt)
         dr = sig * math.sqrt(3 * dt)
         M = -alpha * dt
         jmax = math.ceil(-1.835 / M)
+
+        self.x = np.zeros((N, 1 + N * 2))
 
         # Initialize yield curve
 
@@ -40,25 +44,24 @@ class HullWhiteEngine():
             P.append(math.exp(-R[i] * i * dt))
 
         # Initialise first node for simplified process
-        r = np.zeros((N, 1 + N * 2))
+        self.r = np.zeros((N, 1 + N * 2))
         Q = np.zeros((N, 1 + N * 2))
         d = np.zeros((N, N * 2))
 
         d[0][0] = math.exp(-R[1] * dt)
 
-        r[0][0] = 0
+        self.r[0][0] = 0
         Q[0][0] = 1
         a = []
 
         # Calculate tree for simplified process
 
         for i in range(0, N, 1):
-            top_node = min(i, jmax)
             step_i = Step(i)
-            for j in range(-top_node, top_node + 1, 1):
-                r[i][j] = j * dr
-                d[i][j] = math.exp(-r[i][j] * dt)
-                node = Node(i, j, r[i][j])
+            for j in range(-i, i + 1, 1):
+                self.r[i][j] = j * dr
+                d[i][j] = math.exp(-self.r[i][j] * dt)
+                node = Node(i, j, self.r[i][j])
                 step_i.nodes.append(node)
             self.steps.append(step_i)
 
@@ -114,6 +117,6 @@ class HullWhiteEngine():
             a.append((math.log(sum) - math.log(P[i + 1])) / dt)
 
             for j in range(-top_node, top_node + 1, 1):
-                  r[i][j] += a[i]
-                  d[i][j] = math.exp(-r[i][j] * dt)
-                  step_i.nodes[j].r = r[i][j]
+                  self.r[i][j] += a[i]
+                  d[i][j] = math.exp(-self.r[i][j] * dt)
+                  step_i.nodes[j].r = self.r[i][j]

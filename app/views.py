@@ -22,7 +22,7 @@ def home(request):
     hw = HullWhiteEngine(input)
     hw.compute()
     hw_json = json.dumps(hw.as_json(), cls=DjangoJSONEncoder)
-    html_fig = draw_data(hw)
+    html_fig = draw_data(hw.r)
     return render(request, 'home.html', {"input": input, "input_json": input_json, "hw": hw, "hw_json": hw_json,'div_figure' : html_fig})
 
 def documentation(request):
@@ -40,9 +40,14 @@ def compute(request):
     return utils.JSONResponse(hw.as_json())
 
 
-def draw_data(hw):
+def draw_data(r):
     fig, ax = plt.subplots()
-    plot([0, 3], [0, 6])
+    for i in range(0,3,1):
+        for j in range(-i,i+1,1):
+             plot([i, r[i][j+1]]);
+             plot([i, r[i][j]]);
+             plot([i, r[i][j]]);
+
     ax.set_xlim(0, 6)
     ax.set_ylim(-6,6)
     ax.set_xlabel('Maturity')
@@ -52,13 +57,9 @@ def draw_data(hw):
     plt.close(fig)
     return html_fig
 
+
 def draw_hull_white_treOLDe(request):
     figure(figsize=(9, 7))
-    hw_step = Hw_Step.objects.get(pk=1)
-    hwdata = json.loads(hw_step.data)
-    for stp in hwdata['steps']:
-        for node in stp['nodes']:
-            plot([node["i"],node["x"]],[node["i"],node["x"]])
     xlim(0, 6)
     ylim(-6, 6)
     xticks(arange(15))
