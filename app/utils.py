@@ -12,3 +12,6 @@ class JSONResponse(HttpResponse):
 
 def gen_id(i,j):
     return str(i)+":"+str(j)
+
+def val(value):
+    return round(value,4)

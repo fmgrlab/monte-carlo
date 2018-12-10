@@ -47,15 +47,23 @@ class HullWhiteEngine():
                 hw_step.nodes.append(node)
             self.hwsteps.append(hw_step)
 
+        r_initial = np.zeros((N, 1 + N * 2))
+        for i in range(0, N, 1):
+            hw_step = self.hwsteps[i]
+            for j in range(-i, i + 1, 1):
+                node = hw_step.nodes[j]
+                r_initial[i][j] = utils.val(j * dr)
+                node.r_initial = r_initial[i][j]
+
         for i in range(0, N-1,1):
             hw_step = self.hwsteps[i]
             for j in range(-i,i+1,1):
                 node = hw_step.nodes[j]
                 if j == jmax:
                     # Branching C
-                    pu[i][j] = 7.0 / 6.0 + (j * j * M * M + 3 * j * M) / 2
-                    pm[i][j] = -1.0 / 3.0 - j * j * M * M - 2 * j * M
-                    pd[i][j] = 1.0 / 6.0 + (j * j * M * M + j * M) / 2
+                    pu[i][j] = utils.val( 7.0 / 6.0 + (j * j * M * M + 3 * j * M) / 2)
+                    pm[i][j] = utils.val( -1.0 / 3.0 - j * j * M * M - 2 * j * M)
+                    pd[i][j] = utils.val( 1.0 / 6.0 + (j * j * M * M + j * M) / 2)
 
                     node.next_up = utils.gen_id(i+1,j)
                     node.next_m = utils.gen_id(i+1,j-1)
@@ -67,9 +75,9 @@ class HullWhiteEngine():
 
                 if j == jmin:
                     # Branching B
-                    pu[i][j] = 1.0 / 6.0 + (j * j * M * M - j * M) / 2
-                    pm[i][j] = -1.0 / 3.0 - j * j * M * M + 2 * j * M
-                    pd[i][j] = 7.0 / 6.0 + (j * j * M * M - j * M) / 2
+                    pu[i][j] = utils.val(1.0 / 6.0 + (j * j * M * M - j * M) / 2)
+                    pm[i][j] = utils.val(-1.0 / 3.0 - j * j * M * M + 2 * j * M)
+                    pd[i][j] = utils.val(7.0 / 6.0 + (j * j * M * M - j * M) / 2)
 
                     node.next_up = utils.gen_id(i+1,j+2)
                     node.next_m = utils.gen_id(i+1,j+1)
@@ -81,9 +89,9 @@ class HullWhiteEngine():
 
                 if (j != jmin) and (j != jmax):
                     # Branching A
-                    pu[i][j] = 1.0 / 6.0 + (j * j * M * M + j * M) / 2
-                    pm[i][j] = 2.0 / 3.0 - (j * j * M * M)
-                    pd[i][j] = 1.0 / 6.0 + (j * j * M * M - j * M) / 2
+                    pu[i][j] = utils.val(1.0 / 6.0 + (j * j * M * M + j * M) / 2)
+                    pm[i][j] = utils.val(2.0 / 3.0 - (j * j * M * M))
+                    pd[i][j] = utils.val(1.0 / 6.0 + (j * j * M * M - j * M) / 2)
                     node.next_up = utils.gen_id(i+1,j+1)
                     node.next_m = utils.gen_id(i+1,j)
                     node.next_d = utils.gen_id(i+1,j-1)
