@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from app import utils
 class HwStep():
     def __init__(self, i):
         self.i = i
@@ -20,9 +21,11 @@ class Node():
         self.next_up = next_up
         self.next_m = next_m
         self.next_d = next_d
+        self.id = utils.gen_id(i,j)
 
     def as_json(self):
         dict = OrderedDict()
+        dict['id'] = self.id
         dict['i'] = self.i
         dict['j'] = self.j
         dict['pu'] = self.pu
@@ -31,6 +34,7 @@ class Node():
         dict['next_up'] = self.next_up
         dict['next_m'] = self.next_m
         dict['next_d'] = self.next_d
+
         return dict
 
 class HwInput():

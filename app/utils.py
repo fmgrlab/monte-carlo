@@ -9,3 +9,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
+
+def gen_id(i,j):
+    return str(i)+":"+str(j)

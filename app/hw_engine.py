@@ -1,6 +1,7 @@
 import math
 from collections import OrderedDict
 import numpy as np
+from app import utils
 from app.objects import HwStep,Node
 
 class HullWhiteEngine():
@@ -56,9 +57,9 @@ class HullWhiteEngine():
                     pm[i][j] = -1.0 / 3.0 - j * j * M * M - 2 * j * M
                     pd[i][j] = 1.0 / 6.0 + (j * j * M * M + j * M) / 2
 
-                    node.next_up = j
-                    node.next_m = j-1
-                    node.next_d = j-2
+                    node.next_up = utils.gen_id(i+1,j)
+                    node.next_m = utils.gen_id(i+1,j-1)
+                    node.next_d = utils.gen_id(i+1,j-2)
 
                     node.pu = pu[i][j]
                     node.pm = pm[i][j]
@@ -70,9 +71,9 @@ class HullWhiteEngine():
                     pm[i][j] = -1.0 / 3.0 - j * j * M * M + 2 * j * M
                     pd[i][j] = 7.0 / 6.0 + (j * j * M * M - j * M) / 2
 
-                    node.next_up = j + 2
-                    node.next_m = j+1
-                    node.next_d = j
+                    node.next_up = utils.gen_id(i+1,j+2)
+                    node.next_m = utils.gen_id(i+1,j+1)
+                    node.next_d = utils.gen_id(i+1,j)
 
                     node.pu = pu[i][j]
                     node.pm = pm[i][j]
@@ -83,9 +84,9 @@ class HullWhiteEngine():
                     pu[i][j] = 1.0 / 6.0 + (j * j * M * M + j * M) / 2
                     pm[i][j] = 2.0 / 3.0 - (j * j * M * M)
                     pd[i][j] = 1.0 / 6.0 + (j * j * M * M - j * M) / 2
-                    node.next_up = j+1
-                    node.next_m = j
-                    node.next_d = j-1
+                    node.next_up = utils.gen_id(i+1,j+1)
+                    node.next_m = utils.gen_id(i+1,j)
+                    node.next_d = utils.gen_id(i+1,j-1)
 
                     node.pu = pu[i][j]
                     node.pm = pm[i][j]
