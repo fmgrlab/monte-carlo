@@ -16,7 +16,7 @@ class HullWhiteEngine():
         )
 
     def compute(self):
-        rates = list()
+        rates = []
         rates.append(0.10)
         rates.append(0.105)
         rates.append(0.11)

@@ -1,47 +1,37 @@
-class Step():
+from collections import OrderedDict
+class HwStep():
     def __init__(self, i):
         self.i = i
-        self.nodes = list()
-        self.theta = list()
+        self.nodes = []
 
     def as_json(self):
-        return dict(
-            i=self.i,
-            nodes=[ob.as_json() for ob in self.nodes]
-        )
-
+        dict = OrderedDict()
+        dict['i'] = self.i
+        dict['nodes'] = [ob.as_json() for ob in self.nodes]
+        return dict
 
 class Node():
-    def __init__(self, i=0, j=0, x=0.0, pu=None, pm=None, pd=None, r=0.0):
-        self.id
+    def __init__(self, i=0, j = 0, pu=None, pm=None, pd=None, next_up = None, next_m = None, next_d = None, ):
         self.i = i
         self.j = j
-        self.x = x
-        self.position = None
-        self.r = r
-        self.presentValue = None
-        self.alpha = 0;
         self.pu = pu
         self.pd = pd
         self.pm = pm
-        self.node_up = None
-        self.node_m = None
-        self.node_d = None
-
-        self.label = "N" + str(self.i) + "_" + str(self.j)
+        self.next_up = next_up
+        self.next_m = next_m
+        self.next_d = next_d
 
     def as_json(self):
-        return dict(
-            i=self.i,
-            j=self.j,
-            x=self.x,
-            r=self.r,
-            pu=self.pu,
-            pm=self.pm,
-            pd=self.pd,
-            label="N" + str(self.i) + "_" + str(self.j)
-        )
-
+        dict = OrderedDict()
+        dict['i'] = self.i
+        dict['j'] = self.j
+        dict['pu'] = self.pu
+        dict['pm'] = self.pm
+        dict['pd'] = self.pd
+        dict['next_up'] = self.next_up
+        dict['next_m'] = self.next_m
+        dict['next_d'] = self.next_d
+        return dict
 
 class HwInput():
     def __init__(self, volatility, maturity, alpha, period, rate, source_rate):
@@ -50,15 +40,29 @@ class HwInput():
         self.alpha = alpha
         self.period = period
         self.rate = rate
+        self.N = self.get_step(period,maturity)
         self.source_rate = source_rate
 
     def as_json(self):
-        return dict(
-            period=self.period,
-            alpha=self.alpha,
-            rate=self.rate,
-            volatility=self.volatility,
-            maturity=self.maturity,
-            source_rate=self.source_rate
+        dict = OrderedDict()
+        dict['maturity'] = self.maturity
+        dict['period'] = self.period
+        dict['N'] = self.N
+        dict['alpha'] = self.alpha
+        dict['volatility'] = self.volatility
+        dict['source_rate'] = self.source_rate
+        dict['rate'] = self.rate
+        return dict
 
-        )
+    def get_step(self, period, maturity):
+        if period is None or len(period) == 0:
+            return maturity
+        if period.lower().startswith('w'):
+            return 52 * maturity
+        if period.lower().startswith('d'):
+            return 360 * maturity
+        if period.lower().startswith('s'):
+            return 2 * maturity
+        if period.lower().startswith('q'):
+            return 4 * maturity
+        return maturity

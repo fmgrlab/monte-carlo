@@ -66,7 +66,7 @@ def parse_request(request):
     alpha = float(request.GET.get('alpha', 0.1))
     volatility = float(request.GET.get('volatility', 0.01))
     source_rate = request.GET.get("source_rate", "bloomberg")
-    rates = list()
+    rates = []
     rates.append(10)
     rates.append(10.5)
     rates.append(11)
