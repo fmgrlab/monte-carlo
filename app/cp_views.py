@@ -18,7 +18,7 @@ def home(request):
     hw = HullWhiteEngine(hwinput)
     hw.compute()
     input_json = json.dumps(hwinput.as_json(), cls=DjangoJSONEncoder)
-    html_fig = draw_data(hw.r_initial)
+    html_fig = draw_data(hw.hwsteps)
     return render(request, 'home.html', {"input": hwinput, "input_json": input_json, "hw": hw, 'div_figure': html_fig})
 
 
@@ -37,19 +37,16 @@ def api_hullwhite(request):
     return utils.JSONResponse(hw.as_json())
 
 
-def draw_data(r):
+def draw_data(hwsteps):
     fig, ax = plt.subplots()
 
-    plot([0, 100*r[2][1]])
-    plot([0, 100*r[2][0]])
-    plot([0, 100*r[2][-1]])
+    for hstep in hwsteps:
+        nodes = hstep.nodes
+        for node in nodes:
+            plot([node.i,  1+node.i], [0, -4])
+            plot([node.i,  1+node.i], [0, 0])
+            plot([node.i,  1+node.i], [0, 4])
 
-    for i in range(0, 4, 1):
-        node = min(i,2)
-        for j in range(-node, node + 1, 1):
-            plot([i, i + 1], [r[i][j] * 100, r[i][j - 1] * 100])
-            plot([i, i + 1], [r[i][j] * 100, r[i][j    ] * 100])
-            plot([i, i + 1], [r[i][j] * 100, r[i][j + 1] * 100])
 
     ax.set_xlim(0, 6)
     ax.set_ylim(-6, 6)

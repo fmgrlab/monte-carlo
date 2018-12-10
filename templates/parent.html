@@ -202,7 +202,7 @@
 
                     <div class="col-md-3" style="height: 650px;padding: 5px;border: 1px solid #ecf0f1">
                         <h5>Transition probability</h5>
-                        <table class="table table-bordered table-hover table-condensed"
+                        <table  cellpadding="5" class="table table-bordered table-hover table-condensed"
                                style="width: 100%;overflow: scroll;height: 100%">
                             <thead>
                             <tr>
@@ -245,19 +245,19 @@
                                             {{ item.j }}
                                         </td>
                                         <td>
-                                            {{ item.x|floatformat:3 }}
+                                            {{ item.r_initial}}
                                         </td>
                                         <td>
-                                            {{ item.r|floatformat:3 }}
+                                            {{ item.r}}
                                         </td>
                                         <td>
-                                            {{ item.pu|floatformat:3 }}
+                                            {{ item.pu}}
                                         </td>
                                         <td>
-                                            {{ item.pm|floatformat:3 }}
+                                            {{ item.pm }}
                                         </td>
                                         <td>
-                                            {{ item.pd|floatformat:3 }}
+                                            {{ item.pd}}
                                         </td>
                                     </tr>
                                 {% endfor %}

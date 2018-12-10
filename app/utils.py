@@ -15,3 +15,7 @@ def gen_id(i,j):
 
 def val(value):
     return round(value,4)
+
+
+def percent(value):
+    return val(value)*100

@@ -34,9 +34,7 @@ class HullWhiteEngine():
         for i in range(0, N + 1, 1):
             P.append(math.exp(-R[i] * i * dt))
 
-        pu = np.zeros((N, 1+N * 2))
-        pm = np.zeros((N, 1+N * 2))
-        pd = np.zeros((N, 1+N * 2))
+
 
         #Create graph
 
@@ -47,13 +45,18 @@ class HullWhiteEngine():
                 hw_step.nodes.append(node)
             self.hwsteps.append(hw_step)
 
-        r_initial = np.zeros((N, 1 + N * 2))
+        self.r_initial = np.zeros((N, 2 + N * 2))
         for i in range(0, N, 1):
             hw_step = self.hwsteps[i]
             for j in range(-i, i + 1, 1):
                 node = hw_step.nodes[j]
-                r_initial[i][j] = utils.val(j * dr)
-                node.r_initial = r_initial[i][j]
+                self.r_initial[i][j] = utils.val(j * dr)
+                node.r_initial = utils.percent(self.r_initial[i][j])
+
+        pu = np.zeros((N, 1 + N * 2))
+        pm = np.zeros((N, 1 + N * 2))
+        pd = np.zeros((N, 1 + N * 2))
+
 
         for i in range(0, N-1,1):
             hw_step = self.hwsteps[i]
@@ -99,6 +102,7 @@ class HullWhiteEngine():
                     node.pu = pu[i][j]
                     node.pm = pm[i][j]
                     node.pd = pd[i][j]
+
 
         return self.hwinput
 
