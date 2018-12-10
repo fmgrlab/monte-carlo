@@ -12,7 +12,7 @@ class Step():
 
 
 class Node():
-    def __init__(self, i=0, j=0, x = 0.0, pu=None, pm=None, pd=None, r = 0.0 ):
+    def __init__(self, i=0, j=0, x=0.0, pu=None, pm=None, pd=None, r=0.0):
         self.id
         self.i = i
         self.j = j
@@ -28,10 +28,7 @@ class Node():
         self.node_m = None
         self.node_d = None
 
-
-
-        self.label = "N"+str(self.i)+"_"+str(self.j)
-
+        self.label = "N" + str(self.i) + "_" + str(self.j)
 
     def as_json(self):
         return dict(
@@ -42,7 +39,7 @@ class Node():
             pu=self.pu,
             pm=self.pm,
             pd=self.pd,
-            label = "N"+str(self.i)+"_"+str(self.j)
+            label="N" + str(self.i) + "_" + str(self.j)
         )
 
 

@@ -200,8 +200,8 @@
                 <div class="row" style="margin: 1%">
 
 
-                    <div class="col-md-3" style="height: 650px;padding: 5px;border: 1px solid #ecf0f1" >
-                            <h5>Transition probability</h5>
+                    <div class="col-md-3" style="height: 650px;padding: 5px;border: 1px solid #ecf0f1">
+                        <h5>Transition probability</h5>
                         <table class="table table-bordered table-hover table-condensed"
                                style="width: 100%;overflow: scroll;height: 100%">
                             <thead>
@@ -236,43 +236,42 @@
 
                                 {% for item in step.nodes %}
 
-                                <tr>
-                                 <td>
-                                        {{ item.i}}
-                                    </td>
+                                    <tr>
+                                        <td>
+                                            {{ item.i }}
+                                        </td>
 
-                                    <td>
-                                        {{ item.j}}
-                                    </td>
-                                    <td>
-                                        {{ item.x|floatformat:3 }}
-                                    </td>
-                                    <td>
-                                        {{ item.r|floatformat:3 }}
-                                    </td>
-                                    <td>
-                                        {{ item.pu|floatformat:3 }}
-                                    </td>
-                                    <td>
-                                        {{ item.pm|floatformat:3 }}
-                                    </td>
-                                    <td>
-                                        {{ item.pd|floatformat:3 }}
-                                    </td>
-                                </tr>
+                                        <td>
+                                            {{ item.j }}
+                                        </td>
+                                        <td>
+                                            {{ item.x|floatformat:3 }}
+                                        </td>
+                                        <td>
+                                            {{ item.r|floatformat:3 }}
+                                        </td>
+                                        <td>
+                                            {{ item.pu|floatformat:3 }}
+                                        </td>
+                                        <td>
+                                            {{ item.pm|floatformat:3 }}
+                                        </td>
+                                        <td>
+                                            {{ item.pd|floatformat:3 }}
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                             {% endfor %}
                             </tbody>
                         </table>
 
 
-
                     </div>
 
-                 <div class="col-md-1"></div>
+                    <div class="col-md-1"></div>
 
                     <div class="col-md-8" style="height: 650px;padding: 5px;background-color: #ecf0f1">
-                        <div >{{ div_figure|safe }}</div>
+                        <div>{{ div_figure|safe }}</div>
                     </div>
                 </div>
                 </div>

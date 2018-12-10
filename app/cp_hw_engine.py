@@ -2,15 +2,12 @@ import math
 
 import numpy as np
 
-from app.objects import Step,Node
-
 
 class HullWhiteEngine():
     def __init__(self, hwinput):
         self.hwinput = hwinput
         self.steps = list()
         self.r = None
-
 
     def as_json(self):
         return dict(
@@ -43,7 +40,7 @@ class HullWhiteEngine():
         # Initialize yield curve
 
         P = []
-        for i in range(0, N+1, 1):
+        for i in range(0, N + 1, 1):
             P.append(math.exp(-R[i] * i * dt))
 
         # Initialise first node for simplified process
@@ -88,27 +85,26 @@ class HullWhiteEngine():
                 pm[i][j] = pm[i][-j]
                 pd[i][j] = pu[i][-j]
 
-
-        #Update state prices, find time-varying drift and displace nodes
+        # Update state prices, find time-varying drift and displace nodes
 
 
         for i in range(1, N, 1):
             top_node = min(i, jmax)
             step_i = self.steps[i]
             sum = 0
-            #Update pure security prices
+            # Update pure security prices
             for j in range(-top_node, top_node + 1, 1):
-                Q[i][j] = Q[i - 1][j + 1] * pu[i][j+1] * d[i-1][j+1] + Q[i - 1][j] * pm[i][j] *  d[i-1][j] + Q[i - 1][j - 1] * pd[i][j-1]*d[i-1][j+1]
+                Q[i][j] = Q[i - 1][j + 1] * pu[i][j + 1] * d[i - 1][j + 1] + Q[i - 1][j] * pm[i][j] * d[i - 1][j] + \
+                          Q[i - 1][j - 1] * pd[i][j - 1] * d[i - 1][j + 1]
                 sum += Q[i][j] * math.exp(-j * dt * dr)
             a.append((math.log(sum) - math.log(P[i + 1])) / dt)
 
             sum = 0
             for j in range(-top_node, top_node + 1, 1):
-                    sum += Q[i][j] * math.exp(-j * dt * dr)
+                sum += Q[i][j] * math.exp(-j * dt * dr)
             a.append((math.log(sum) - math.log(P[i + 1])) / dt)
 
             for j in range(-top_node, top_node + 1, 1):
-                  self.r[i][j] += a[i]
-                  d[i][j] = math.exp(-self.r[i][j] * dt)
-                  step_i.nodes[j].r = self.r[i][j]
-
+                self.r[i][j] += a[i]
+                d[i][j] = math.exp(-self.r[i][j] * dt)
+                step_i.nodes[j].r = self.r[i][j]

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import matplotlib
+
 matplotlib.use("Agg")
 from django.shortcuts import render
 from app.objects import HwInput
@@ -11,13 +12,15 @@ import mpld3
 from pylab import *
 from app import utils
 
+
 def home(request):
     hwinput = parse_request(request)
     hw = HullWhiteEngine(hwinput)
     hw.compute()
     input_json = json.dumps(hwinput.as_json(), cls=DjangoJSONEncoder)
     html_fig = draw_data(hw)
-    return render(request, 'home.html', {"input": hwinput,"input_json": input_json, "hw": hw,'div_figure' : html_fig})
+    return render(request, 'home.html', {"input": hwinput, "input_json": input_json, "hw": hw, 'div_figure': html_fig})
+
 
 def documentation(request):
     return render(request, 'document.html')
@@ -46,7 +49,7 @@ def draw_data(r):
     """""
 
     ax.set_xlim(0, 6)
-    ax.set_ylim(-6,6)
+    ax.set_ylim(-6, 6)
     ax.set_xlabel('Maturity')
     ax.set_ylabel('Rate')
 
@@ -59,7 +62,7 @@ def draw_data(r):
 
 def parse_request(request):
     maturity = int(request.GET.get('maturity', 5))
-    period = request.GET.get('period','y')
+    period = request.GET.get('period', 'y')
     alpha = float(request.GET.get('alpha', 0.1))
     volatility = float(request.GET.get('volatility', 0.01))
     source_rate = request.GET.get("source_rate", "bloomberg")

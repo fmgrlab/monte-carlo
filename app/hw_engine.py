@@ -3,7 +3,6 @@ class HullWhiteEngine():
         self.hwinput = hwinput
         self.steps = list()
 
-
     def as_json(self):
         return dict(
             hwinput=self.hwinput.as_json(),
@@ -12,7 +11,8 @@ class HullWhiteEngine():
 
     def compute(self):
         N = self.get_step(self.hwinput.period, self.hwinput.maturity)
-        return self.compute_value(N, self.hwinput.period, self.hwinput.maturity, self.hwinput.volatility, self.hwinput.alpha, self.hwinput.rate)
+        return self.compute_value(N, self.hwinput.period, self.hwinput.maturity, self.hwinput.volatility,
+                                  self.hwinput.alpha, self.hwinput.rate)
 
     def compute_value(self, N, dt, maturity, sig, alpha, R):
         return self.hwinput
