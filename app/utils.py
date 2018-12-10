@@ -1,9 +1,6 @@
 from __future__ import unicode_literals
 
-import json
-
 from django.http import HttpResponse
-from pylab import *
 from rest_framework.renderers import JSONRenderer
 
 
@@ -12,10 +9,3 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
-
-
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)

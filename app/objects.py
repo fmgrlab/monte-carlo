@@ -13,13 +13,23 @@ class Step():
 
 class Node():
     def __init__(self, i=0, j=0, x = 0.0, pu=None, pm=None, pd=None, r = 0.0 ):
+        self.id
         self.i = i
         self.j = j
         self.x = x
+        self.position = None
         self.r = r
+        self.presentValue = None
+        self.alpha = 0;
         self.pu = pu
         self.pd = pd
         self.pm = pm
+        self.node_up = None
+        self.node_m = None
+        self.node_d = None
+
+
+
         self.label = "N"+str(self.i)+"_"+str(self.j)
 
 
@@ -44,11 +54,9 @@ class HwInput():
         self.period = period
         self.rate = rate
         self.source_rate = source_rate
-        self.step = self.get_step(period=period, maturity=maturity)
 
     def as_json(self):
         return dict(
-            step=self.step,
             period=self.period,
             alpha=self.alpha,
             rate=self.rate,
@@ -57,14 +65,3 @@ class HwInput():
             source_rate=self.source_rate
 
         )
-
-    def get_step(self, period, maturity):
-        if period.lower().startswith('w'):
-            return 52 * maturity
-        if period.lower().startswith('d'):
-            return 360 * maturity
-        if period.lower().startswith('s'):
-            return 2 * maturity
-        if period.lower().startswith('q'):
-            return 4 * maturity
-        return maturity
