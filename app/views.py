@@ -114,9 +114,8 @@ def draw_2(r,N,dt,jmax):
     i_names = 0
     for p in names_set:
         print(p[1] * 0.9)
-        ax.annotate(names[i_names], xy=(p[0], p[1]), xytext=(p[0] * 0.95, p[1] * 0.95), fontsize=13, color='blue')
+        ax.annotate(names[i_names], xy=(p[0], p[1]), xytext=(p[0] * 0.95, p[1] * 0.9), fontsize=13, color='blue')
         i_names += 1
-
 
     plt.ylim([0, .15])
     ax.set_xlim(0, N + 1)
