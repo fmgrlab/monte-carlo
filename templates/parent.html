@@ -287,7 +287,7 @@
     function addInput() {
         var foo = document.getElementById("ratebar");
         while (foo.firstChild) foo.removeChild(foo.firstChild);
-        var maturity = document.getElementById("maturity").value;
+        var maturity = parseInt(document.getElementById("maturity").value)+1;
         for (var i = 0; i < maturity; i++) {
             var element = document.createElement("input");
             element.setAttribute("name", "rate");
@@ -303,7 +303,7 @@
     }
 
     function bloomberg() {
-        var maturity = document.getElementById("maturity").value;
+        var maturity = parseInt(document.getElementById("maturity").value)+1;
         var input_js = ({{ input_json|safe }})
         console.log(input_js.source_rate.startsWith("b"));
         for (var i = 0; i < maturity; i++) {
@@ -317,7 +317,7 @@
     }
 
     function onManual() {
-        var maturity = document.getElementById("maturity").value;
+        var maturity = parseInt(document.getElementById("maturity").value)+1;
         var input_js = ({{ input_json|safe }})
         for (var i = 0; i < maturity; i++) {
             var element = document.getElementById("rate" + i);

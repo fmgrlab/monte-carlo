@@ -139,7 +139,7 @@ def draw_2(graph,r,N,dt,hwsteps):
 
 
 def parse_request(request):
-    maturity = int(request.GET.get('maturity', 5))
+    maturity = int(request.GET.get('maturity', 9))
     period = request.GET.get('period', 'years')
     alpha = float(request.GET.get('alpha', 0.1))
     volatility = float(request.GET.get('volatility', 0.014))
@@ -156,7 +156,9 @@ def parse_request(request):
     rates.append(0.0739790)
     rates.append(0.0749015)
     rate = request.GET.getlist("rate", rates)
-    rate_float = [float(i) for i in rate]
-    rate_float.append(rate_float[len(rate_float)-1])
-    print(rate_float)
+    try:
+        rate_float = [float(i) for i in rate]
+    except :
+        rate_float = rates
+
     return HwInput(volatility, maturity, alpha, period, rate_float, source_rate)
