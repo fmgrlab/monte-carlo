@@ -11,7 +11,7 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 def gen_id(i,j):
-    return str(i)+","+str(j)
+    return "("+str(i)+","+str(j) +")"
 
 def val(value):
     return round(value,4)

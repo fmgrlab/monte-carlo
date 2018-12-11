@@ -17,9 +17,9 @@ import  numpy as np
 def home(request):
     hwinput = parse_request(request)
     hw = HullWhiteEngine(hwinput)
-    graph, r, N, dt = hw.compute2()
+    r, N, dt, jmax = hw.compute2()
     input_json = json.dumps(hwinput.as_json(), cls=DjangoJSONEncoder)
-    html_fig = draw_2(graph,r,N,dt,hw.hwsteps)
+    html_fig = draw_2(r,N,dt, jmax)
     return render(request, 'home.html', {"input": hwinput, "input_json": input_json, "hw": hw, 'div_figure': html_fig})
 
 
@@ -67,64 +67,56 @@ def draw_data(hw):
     return html_fig
 
 
-def draw_2(graph,r,N,dt,hwsteps):
+def draw_2(r,N,dt,jmax):
+    # Implementing the graphique
+
     i = 0
     matriz = []
     names = []
-    names_set = set()
-
-    for k1 in graph:
-        names.append(k1)
-    names = sorted(names)
+    names_set = []
 
     for line in r:
         j = 0
+        top_node = int(min(i, jmax))
+
         if i < len(r) - 1:
-            for element in line:
-                if element != 0:
-                    if j == 1 or j == 2 or j == 3:
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j + 1])])
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j])])
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j - 1])])
-                        #names_set.add()
+            for j in range(-top_node, top_node + 1):
+                if j == -jmax:
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j + 2 + jmax])])
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j + 1 + jmax])])
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j + jmax])])
 
-                    elif j == 0:
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j + 2])])
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j + 1])])
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j])])
+                elif j == jmax:
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j + jmax])])
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j - 1 + jmax])])
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j - 2 + jmax])])
 
-                    elif j == 4:
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j])])
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j - 1])])
-                        matriz.append([(i, r[i, j]), (i + 1, r[i + 1, j - 2])])
+                else:
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j + 1 + jmax])])
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j + jmax])])
+                    matriz.append([(i, r[i, j + jmax]), (i + 1, r[i + 1, j - 1 + jmax])])
 
-                # names_set.add((i, r[i,j]))
-
-                j += 1
-
+                names_set.append((i, r[i, j + jmax]))
+                names.append((i, j))
         else:
-            for element in line:
-                # names_set.add((i, r[i,j]))
-
-                j += 1
-
+            for j in range(-top_node, top_node + 1):
+                names_set.append((i, r[i, j + jmax]))
+                names.append((i, j))
         i += 1
-    fig, ax = plt.subplots()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
     for l in matriz:
         d = [[p[0] for p in l], [p[1] for p in l]]
         ax.plot(d[0], d[1], 'k-*')
-        for p in l:
-            names_set.add(p)
+
     i_names = 0
     for p in names_set:
-       # ax.annotate(names[i_names], xy=p)
+        print(p[1] * 0.9)
+        ax.annotate(names[i_names], xy=(p[0], p[1]), xytext=(p[0] * 0.95, p[1] * 0.95), fontsize=13, color='blue')
         i_names += 1
 
-    for hstep in hwsteps:
-        nodes = hstep.nodes
-        for node in nodes:
-            print(node.id)
-            #plt.text(node.i,node.rate, node.id)
 
     plt.ylim([0, .15])
     ax.set_xlim(0, N + 1)
@@ -139,10 +131,10 @@ def draw_2(graph,r,N,dt,hwsteps):
 
 
 def parse_request(request):
-    maturity = int(request.GET.get('maturity', 9))
+    maturity = int(request.GET.get('maturity', 4))
     period = request.GET.get('period', 'years')
     alpha = float(request.GET.get('alpha', 0.1))
-    volatility = float(request.GET.get('volatility', 0.014))
+    volatility = float(request.GET.get('volatility', 0.01))
     source_rate = request.GET.get("source_rate", "bloomberg")
     rates = []
     rates.append(0.0509389)
@@ -150,11 +142,7 @@ def parse_request(request):
     rates.append(0.0630595)
     rates.append(0.0673464)
     rates.append(0.0694816)
-    rates.append(0.0708807)
-    rates.append(0.0727527)
-    rates.append(0.0730852)
-    rates.append(0.0739790)
-    rates.append(0.0749015)
+
     rate = request.GET.getlist("rate", rates)
     try:
         rate_float = [float(i) for i in rate]

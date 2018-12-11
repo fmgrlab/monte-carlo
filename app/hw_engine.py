@@ -258,4 +258,4 @@ class HullWhiteEngine():
 
             r[0][0 + jmax] = R[0]
 
-        return graph,r,N,dt
+        return r,N,dt,jmax
