@@ -62,7 +62,7 @@ class HullWhiteEngine():
             for j in range(-i, i + 1, 1):
                 node = hw_step.nodes[j]
                 self.r_initial[i][j] = utils.val(j * dr)
-                node.r_initial = utils.percent(self.r_initial[i][j])
+                #node.r_initial = utils.percent(self.r_initial[i][j])
 
         pu = np.zeros((N, 1 + N * 2))
         pm = np.zeros((N, 1 + N * 2))
@@ -154,5 +154,7 @@ class HullWhiteEngine():
 
             for j in range(-i, -i + 1, 1):
                self.r_initial[i][j] += a[i]
+               self.hwsteps[i].nodes[j].r_initial = utils.val(self.r_initial[i][j])
+
 
         return 0
