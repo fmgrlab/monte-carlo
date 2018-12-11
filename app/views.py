@@ -156,4 +156,7 @@ def parse_request(request):
     rates.append(0.0739790)
     rates.append(0.0749015)
     rate = request.GET.getlist("rate", rates)
-    return HwInput(volatility, maturity, alpha, period, rate, source_rate)
+    rate_float = [float(i) for i in rate]
+    rate_float.append(0.0749015)
+    print(rate_float)
+    return HwInput(volatility, maturity, alpha, period, rate_float, source_rate)

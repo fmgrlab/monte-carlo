@@ -95,13 +95,13 @@
 
                                     <div class="col-xs-3">
                                         <label for="volatility">Volatilty</label>
-                                        <input class="form-control" type="number"  max="100"
+                                        <input class="form-control"
                                                name="volatility" value="{{ input.volatility }}">
                                     </div>
 
                                     <div class="col-xs-3">
                                         <label for="alpha">Alpha </label>
-                                        <input class="form-control" type="number"  max="100"
+                                        <input class="form-control"
                                                id="alpha" name="alpha" value="{{ input.alpha }}">
                                     </div>
 
@@ -290,7 +290,6 @@
         var maturity = document.getElementById("maturity").value;
         for (var i = 0; i < maturity; i++) {
             var element = document.createElement("input");
-            element.setAttribute("type", "number");
             element.setAttribute("name", "rate");
             element.setAttribute("id", "rate" + i);
             element.setAttribute("style", "border: 2px solid #CCC; width:80px;height:40px; margin : 10px; padding: 10px");
