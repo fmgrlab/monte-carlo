@@ -56,11 +56,12 @@ def draw_data(hw):
 
     ax.set_xlim(0, N)
     ax.set_ylim(-N-1, N+1)
-    ax.set_xlabel('Maturity')
+    ax.set_xlabel('Time step')
     ax.set_ylabel('Rate')
     ax.set_yticks(range(-N-1,N+1,1))
+    ax.set_yticks(range(0, N + 1, dt))
 
-    ax.set_title('Hull White trinomial')
+    ax.set_title('Hull White Trinomial tree')
     ax.grid(True)
     html_fig = mpld3.fig_to_html(fig, template_type='general')
     plt.close(fig)
