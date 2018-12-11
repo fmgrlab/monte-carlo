@@ -17,9 +17,9 @@ import  numpy as np
 def home(request):
     hwinput = parse_request(request)
     hw = HullWhiteEngine(hwinput)
-    graph, r = hw.compute2()
+    graph, r, N, dt = hw.compute2()
     input_json = json.dumps(hwinput.as_json(), cls=DjangoJSONEncoder)
-    html_fig = draw_2(graph,r)
+    html_fig = draw_2(graph,r,N,dt)
     return render(request, 'home.html', {"input": hwinput, "input_json": input_json, "hw": hw, 'div_figure': html_fig})
 
 
@@ -67,7 +67,7 @@ def draw_data(hw):
     return html_fig
 
 
-def draw_2(graph,r):
+def draw_2(graph,r,N,dt):
     i = 0
     matriz = []
     names = []
@@ -115,20 +115,22 @@ def draw_2(graph,r):
         ax.plot(d[0], d[1], 'k-*')
         for p in l:
             names_set.add(p)
-    print(names_set)
-
     i_names = 0
     for p in names_set:
-        ax.annotate(names[i_names], xy=p)
+       # ax.annotate(names[i_names], xy=p)
         i_names += 1
 
-    plt.xlim([0, 6])
     plt.ylim([0, .15])
+    ax.set_xlim(0, N + 1)
+    ax.set_xlabel('Time step')
+    ax.set_ylabel('Rate')
+    ax.set_xticks(np.arange(0, N + 1, dt))
     ax.set_title('Hull White Trinomial tree')
     ax.grid(True)
     html_fig = mpld3.fig_to_html(fig, template_type='general')
     plt.close(fig)
     return html_fig
+
 
 def parse_request(request):
     maturity = int(request.GET.get('maturity', 5))
