@@ -19,7 +19,7 @@ def home(request):
     hw = HullWhiteEngine(hwinput)
     graph, r, N, dt = hw.compute2()
     input_json = json.dumps(hwinput.as_json(), cls=DjangoJSONEncoder)
-    html_fig = draw_2(graph,r,N,dt)
+    html_fig = draw_2(graph,r,N,dt,hw.hwsteps)
     return render(request, 'home.html', {"input": hwinput, "input_json": input_json, "hw": hw, 'div_figure': html_fig})
 
 
@@ -67,7 +67,7 @@ def draw_data(hw):
     return html_fig
 
 
-def draw_2(graph,r,N,dt):
+def draw_2(graph,r,N,dt,hwsteps):
     i = 0
     matriz = []
     names = []
@@ -119,6 +119,12 @@ def draw_2(graph,r,N,dt):
     for p in names_set:
        # ax.annotate(names[i_names], xy=p)
         i_names += 1
+
+    for hstep in hwsteps:
+        nodes = hstep.nodes
+        for node in nodes:
+            print(node.id)
+            #plt.text(node.i,node.rate, node.id)
 
     plt.ylim([0, .15])
     ax.set_xlim(0, N + 1)
