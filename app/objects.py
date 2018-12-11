@@ -12,13 +12,17 @@ class HwStep():
         return dict
 
 class Node():
-    def __init__(self, i=0, j = 0, r_initial= 0.0, pu=None, pm=None, pd=None, next_up = None, next_m = None, next_d = None, ):
+    def __init__(self, i=0, j = 0,r_initial= 0.0, q = 0.0,pu=None, pm=None, pd=None, next_up = None, next_m = None, next_d = None, ):
         self.i = i
         self.j = j
         self.r_initial = 0.0
         self.pu = pu
         self.pd = pd
         self.pm = pm
+        self.q = 0.0
+        self.j_up =0
+        self.j_m = 0
+        self.j_d = 0
         self.next_up = next_up
         self.next_m = next_m
         self.next_d = next_d
@@ -30,6 +34,7 @@ class Node():
         dict['i'] = self.i
         dict['j'] = self.j
         dict['r_initial'] = self.r_initial
+        dict['q'] = self.q
         dict['pu'] = self.pu
         dict['pm'] = self.pm
         dict['pd'] = self.pd
