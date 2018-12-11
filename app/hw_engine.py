@@ -8,6 +8,10 @@ from app.objects import HwStep, Node
 class HullWhiteEngine():
     def __init__(self, hwinput):
         self.hwinput = hwinput
+        self.dr = 0.0
+        self.dt = 0.0
+        self.jmax = 0.0
+        self.N = 0.0
         self.hwsteps = []
 
     def as_json(self):
@@ -30,14 +34,18 @@ class HullWhiteEngine():
 
     def compute_value(self, N, maturity, sig, alpha, R):
         dt = maturity / N;
+        self.dt = dt
         dr = sig * math.sqrt(3 * dt)
+        self.dr= dr
         if alpha < 0.000:
             raise Exception('alpha must be non-zero')
         M = -alpha * dt
-        jmax = math.ceil(-1.835 / M)
+        jmax = math.ceil(-0.184 / M)
         if (jmax < 2):
             jmax = 2
         jmin = 0 - jmax
+        self.jmax = jmax
+        self.N= N
 
         P = []
         P.append(1)
@@ -150,7 +158,6 @@ class HullWhiteEngine():
             print(sum2)
 
             a.append((math.log(sum2) - math.log(P[i + 1])) / dt)
-
 
             for j in range(-i, -i + 1, 1):
                self.r_initial[i][j] += a[i]

@@ -12,7 +12,7 @@ class HwStep():
         return dict
 
 class Node():
-    def __init__(self, i=0, j = 0,r_initial= 0.0, q = 0.0,pu=None, pm=None, pd=None, next_up = None, next_m = None, next_d = None, ):
+    def __init__(self, i=0, j = 0,r_initial= 0.0, q = 0.0,pu="", pm="", pd="", next_up = None, next_m = None, next_d = None, ):
         self.i = i
         self.j = j
         self.r_initial = ""
