@@ -1,12 +1,8 @@
 from __future__ import unicode_literals
 
-import matplotlib
-
-matplotlib.use('TkAgg')
-from rest_framework.renderers import JSONRenderer
-import json
 from django.http import HttpResponse
-from pylab import *
+from rest_framework.renderers import JSONRenderer
+
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -14,8 +10,12 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
+def gen_id(i,j):
+    return "("+str(i)+","+str(j) +")"
+
+def val(value):
+    return round(value,4)
+
+
+def percent(value):
+    return val(value)*100
