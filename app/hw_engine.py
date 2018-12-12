@@ -35,25 +35,46 @@ class HullWhiteEngine():
                               self.hwinput.alpha, self.hwinput.rate)
 
     def compute2(self):
-        return self.compute_value2(self.hwinput.alpha, self.hwinput.volatility, 1, self.hwinput.maturity,
-                                   self.hwinput.rate)
+        return self.compute_value2(self.hwinput.alpha, self.hwinput.volatility, 1, self.hwinput.maturity,self.hwinput.rate,self.hwinput.period)
 
-    def compute_value2(self,alpha, sig, dt, maturity, R):
+    def compute_value2(self,alpha, sig, dt, maturity, rates,periode):
         # precalculate constants
+
         N = int(maturity / dt)
         dr = sig * math.sqrt(3 * dt)
         M = -alpha * dt
         jmax = int(math.ceil(-0.1835 / M))
+        if len(periode) == 0:
+            periode = 'years'
 
+        time = 1
+        if periode.startswith('d'):
+            time = 250
+        elif periode.startswith('w'):
+            time = 48
+        elif periode.startswith('m'):
+            time = 12
+        elif periode.startswith('s'):
+            time = 2
+        else:
+            time = 1
+
+        N = int(N * time)
         row = N + 1
         column = 1 + jmax * 2
 
         # initialize yield curve
 
+        R = []
+        for j in range(0, len(rates)):
+            for i in range(0, time):
+                R.append(rates[j] / time)
+
+
         # P = premium
         P = []
         P.append(1)
-        for i in range(1, len(R) + 1):
+        for i in range(1, time * len(rates) + 1):
             P.append(math.exp(-R[i - 1] * i * dt))
 
         # declare the matrices
@@ -66,8 +87,9 @@ class HullWhiteEngine():
         a = []
 
         # initialise first node for simplified process
-        Q[0][jmax] = 1
-        d[0][jmax] = math.exp(-R[0] * dt)
+        for i in range(0, time):
+            Q[i][jmax] = 1
+            d[i][jmax] = math.exp(-R[i] * dt)
 
 
 

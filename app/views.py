@@ -34,7 +34,7 @@ def about(request):
 def api_hullwhite(request):
     input = parse_request(request)
     hw = HullWhiteEngine(input)
-    hw.compute()
+    hw.compute2()
     return utils.JSONResponse(hw.as_json())
 
 
@@ -117,7 +117,7 @@ def draw_2(r,N,dt,jmax):
         ax.annotate(names[i_names], xy=(p[0], p[1]), xytext=(p[0] * 0.95, p[1] * 0.9), fontsize=13, color='blue')
         i_names += 1
 
-    plt.ylim([0, .15])
+    plt.ylim([np.amin(r) - 0.01, np.amax(r) + 0.01])
     ax.set_xlim(0, N + 1)
     ax.set_xlabel('Time step')
     ax.set_ylabel('Rate')

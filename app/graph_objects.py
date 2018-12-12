@@ -28,6 +28,7 @@ class GraphNode():
         dict = OrderedDict()
         dict['i'] = self.i
         dict['j'] = self.j
+        dict['rate'] = str(self.rate)+"%"
         dict['pu'] = self.pu
         dict['pm'] = self.pm
         dict['pd'] = self.pd
