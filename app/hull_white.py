@@ -46,6 +46,7 @@ class GraphNode:
 class HWCalculator:
     def __init__(self):
         self.steps = []
+        self.jmax = 0
 
     def as_json(self):
         dict = OrderedDict()
@@ -63,6 +64,7 @@ class HWCalculator:
         dr = sig * math.sqrt(3 * dt)
         jmax = int(math.ceil(-0.1835 / M))
         jmin = -jmax
+        self.jmax = jmax
         
         #Create empty graph
 
