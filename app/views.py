@@ -11,7 +11,7 @@ from rest_framework.renderers import JSONRenderer
 
 def home(request):
     hwcalculator = HWCalculator()
-    hwcalculator.execute(0.014, 0.1, 5, 1.0 / 12.0)
+    hwcalculator.execute(0.01, 0.1, 5, 1.0 / 1.0)
     return render(request, 'home.html', { "hw": hwcalculator})
 
 
@@ -25,7 +25,7 @@ def about(request):
 
 def api_hullwhite(request):
     hwcalculator = HWCalculator()
-    hwcalculator.execute(0.014,0.1, 5, 1.0/12.0)
+    hwcalculator.execute(0.01,0.1, 5, 1)
     return JSONResponse(hwcalculator.as_json())
 
 class JSONResponse(HttpResponse):

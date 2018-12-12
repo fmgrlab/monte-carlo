@@ -60,6 +60,7 @@ class HWCalculator:
 
         N = int(maturity/dt)
         M = -alpha * dt
+        dr = sig * math.sqrt(3 * dt)
         jmax = int(math.ceil(-0.1835 / M))
         jmin = -jmax
         
@@ -68,6 +69,8 @@ class HWCalculator:
         self.steps = self.create_graph(N, jmax)
 
         #Calculate probability
+
+        self.init_standard_move(N,jmax,self.steps,dr)
 
         self.compute_transition_probability(N,jmax, jmin, M, self.steps)
 
@@ -84,7 +87,12 @@ class HWCalculator:
             hwsteps.insert(i,current_step)
         return hwsteps
 
-            
+    def init_standard_move(self, N, jmax, hw_steps, dr):
+        for i in range(0, N, 1):
+            top_node = min(i, jmax)
+            for j in range(-top_node, top_node + 1, 1):
+                hw_steps[i].nodes[j + top_node].rate = j * dr
+
     def compute_transition_probability(self,N,jmax, jmin, M, hw_steps):
 
         for i in range(0, N, 1):
