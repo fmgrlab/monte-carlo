@@ -68,8 +68,6 @@ def draw_data(hw):
 
 
 def draw_2(r,N,dt,jmax):
-    # Implementing the graphique
-
     i = 0
     matriz = []
     names = []
@@ -113,15 +111,15 @@ def draw_2(r,N,dt,jmax):
 
     i_names = 0
     for p in names_set:
-        print(p[1] * 0.9)
-        ax.annotate(names[i_names], xy=(p[0], p[1]), xytext=(p[0] * 0.95, p[1] * 0.9), fontsize=13, color='blue')
+        ax.annotate(names[i_names], xy=(p[0], p[1]), xytext=(p[0] * 0.95, p[1] * 0.95), fontsize=13, color='blue')
         i_names += 1
 
+    plt.xlim([0, len(r)])
     plt.ylim([np.amin(r) - 0.01, np.amax(r) + 0.01])
-    ax.set_xlim(0, N + 1)
+    fig.set_size_inches(11, 8)
+    plt.ylim([np.amin(r) - 0.01, np.amax(r) + 0.01])
     ax.set_xlabel('Time step')
     ax.set_ylabel('Rate')
-    ax.set_xticks(np.arange(0, N + 1, dt))
     ax.set_title('Hull White Trinomial tree')
     ax.grid(True)
     html_fig = mpld3.fig_to_html(fig, template_type='general')
