@@ -62,19 +62,28 @@ def draw_data(hw):
     fig, ax = plt.subplots()
     N = hw.nbr_steps
     print(N)
+    min_rate = hw.steps[0].nodes[0].rate
+    max_rate = min_rate
     for i in range(0,N-1,1):
         top_node = min(i,hw.jmax)
         for j in range(-top_node,top_node+1,1):
             node = hw.steps[i].nodes[j+top_node]
+            if node.rate < min_rate:
+                min_rate = node.rate
+
+            if node.rate > max_rate:
+                max_rate = node.rate
+
             up = hw.steps[i+1].nodes[node.j_up  + top_node]
             m = hw.steps[i+1].nodes[node.j_m  + top_node]
             dw = hw.steps[i+1].nodes[node.j_d  + top_node]
             plot([i,  i+1], [node.rate*100, up.rate*100])
             plot([i,  i+1], [node.rate*100, m.rate*100])
             plot([i , i+1], [node.rate*100, dw.rate*100])
+    #get_min_rate
 
-    ax.set_xlim(0, N)
-    ax.set_ylim(-10,10)
+    ax.set_xlim(0, N+1)
+    ax.set_ylim(-min_rate*100-1,max_rate*100+1)
     ax.set_xlabel('Maturity')
     ax.set_ylabel('Rate')
 
