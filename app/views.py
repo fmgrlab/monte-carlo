@@ -21,7 +21,13 @@ from pylab import *
 
 def home(request):
     hwcalculator = HWCalculator()
-    hwcalculator.execute(0.01, 0.1, 5, 1.0 / 2.0)
+    rates = []
+    maturity = 5
+    dt = 1
+    N = int(maturity/dt)
+    for i in range(0, N+1, 1):
+        rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
+    hwcalculator.execute(0.01, 0.1, 5, 1.0 / 2.0,rates)
     html_fig = draw_data(hwcalculator)
     return render(request, 'home.html', { "hw": hwcalculator,'div_figure': html_fig})
 
