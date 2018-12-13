@@ -16,49 +16,49 @@
 <style>
 
     table {
-  border-collapse: separate;
-  border-spacing: 0;
-  border-top: 1px solid grey;
-}
+        border-collapse: separate;
+        border-spacing: 0;
+        border-top: 1px solid grey;
+    }
 
-td, th {
-  margin: 0;
-  border: 1px solid grey;
-  white-space: nowrap;
-  border-top-width: 0px;
-}
+    td, th {
+        margin: 0;
+        border: 1px solid grey;
+        white-space: nowrap;
+        border-top-width: 0px;
+    }
 
-.headcol {
-  position: absolute;
-  width: 5em;
-  left: 0;
-  top: auto;
-  border-top-width: 1px;
-  /*only relevant for first row*/
-  margin-top: -1px;
-  /*compensate for top border*/
-}
+    .headcol {
+        position: absolute;
+        width: 5em;
+        left: 0;
+        top: auto;
+        border-top-width: 1px;
+        /*only relevant for first row*/
+        margin-top: -1px;
+        /*compensate for top border*/
+    }
 
-.headcol2 {
-  position: absolute;
-  width: 5em;
-  right: 0;
-  top: auto;
-  border-top-width: 1px;
-  /*only relevant for first row*/
-  margin-top: -1px;
-  /*compensate for top border*/
-  background-color: white;
-}
+    .headcol2 {
+        position: absolute;
+        width: 5em;
+        right: 0;
+        top: auto;
+        border-top-width: 1px;
+        /*only relevant for first row*/
+        margin-top: -1px;
+        /*compensate for top border*/
+        background-color: white;
+    }
 
-.headcol:before {
-  content: 'Row ';
-}
+    .headcol:before {
+        content: 'Row ';
+    }
 
-.long {
-  background: yellow;
-  letter-spacing: 1em;
-}
+    .long {
+        background: yellow;
+        letter-spacing: 1em;
+    }
 
 </style>
 <body onc>
@@ -95,117 +95,119 @@ td, th {
             </nav>
 
 
-                <div class="page-header" style="margin: 1%">
-                    <h1>
-                        Hull White
-                        <small> Numerical implementation of Hull White model using python</small>
-                    </h1>
-                    <p>
-                        The purpose of this website is to implement the interest rate model Hull White
-                </div>
-                <br><br>
+            <div class="page-header" style="margin: 1%">
+                <h1>
+                    Hull White
+                    <small> Numerical implementation of Hull White model using python</small>
+                </h1>
+                <p>
+                    The purpose of this website is to implement the interest rate model Hull White
+            </div>
+            <br><br>
 
-                <form role="form" id="computeForm" method="get" action="/">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="form-group row">
+            <form role="form" id="computeForm" method="get" action="/">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group row">
 
-                                    <div class="col-xs-3">
-                                        <label for="volatility">Volatility</label>
-                                        <input class="form-control" name="volatility" value="{{ hw.volatility }}" type="number" step="0.01" min="0.001">
-                                    </div>
-
-                                    <div class="col-xs-3">
-                                        <label for="alpha">Alpha </label>
-                                        <input class="form-control" id="alpha" name="alpha" value="{{ hw.alpha }}"  type="number" step="0.01" min="0.001">
-                                    </div>
-
-                                    <div class="col-xs-3">
-                                        <label for="maturity">Maturity (year)</label>
-                                        <input class="form-control" type="number"  id="maturity" name="maturity"
-                                               value="{{ hw.maturity }}" step="0.1" onchange="addInput()" min="0.001">
-                                    </div>
-
-                                    <div class="col-xs-3">
-                                        <label for="ex3">Period</label>
-                                        <select class="form-control" id="period" name="period" onchange="addInput()">
-
-                                          {% if hw.period == 'years' %}
-                                                <option value="year" selected>Year</option>
-                                            {% else %}
-                                                <option value="year">Year</option>
-                                            {% endif %}
-
-                                            {% if hw.period == 'days' %}
-                                                <option value="day" selected>Day</option>
-                                            {% else %}
-                                                <option value="day">Days</option>
-                                            {% endif %}
-
-                                            {% if hw.period == 'week' %}
-                                                <option value="week" selected>Week</option>
-                                            {% else %}
-                                                <option value="week">Week</option>
-                                            {% endif %}
-
-                                            {% if hw.period == 'month' %}
-                                                <option value="month" selected>Month</option>
-                                            {% else %}
-                                                <option value="month">Month</option>
-                                            {% endif %}
-
-                                            {% if hw.period == 'quarter' %}
-                                                <option value="quarter" selected>Quarter</option>
-                                            {% else %}
-                                                <option value="quarter">Quarter</option>
-                                            {% endif %}
-
-                                            {% if hw.step == 'semester' %}
-                                                <option value="semester" selected>Semester</option>
-                                            {% else %}
-                                                <option value="semester">Semester</option>
-                                            {% endif %}
-
-                                        </select>
-                                    </div>
+                                <div class="col-xs-3">
+                                    <label for="volatility">Volatility</label>
+                                    <input class="form-control" name="volatility" value="{{ hw.volatility }}"
+                                           type="number" step="0.01" min="0.001">
                                 </div>
 
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group row">
-                                    <div class="col-xs-12">
-                                        <label for="rate">Entrer les taux </label><br>
-                                        <form>
-                                                <input type="radio" name="source_rate" value="manual" checked
-                                                       style="margin-left: 10px" onchange="onManual()"> Manual
-                                        </form>
-                                    </div>
+                                <div class="col-xs-3">
+                                    <label for="alpha">Alpha </label>
+                                    <input class="form-control" id="alpha" name="alpha" value="{{ hw.alpha }}"
+                                           type="number" step="0.01" min="0.001">
+                                </div>
+
+                                <div class="col-xs-3">
+                                    <label for="maturity">Maturity (year)</label>
+                                    <input class="form-control" type="number" id="maturity" name="maturity"
+                                           value="{{ hw.maturity }}" step="0.1" onchange="addInput()" min="0.001">
+                                </div>
+
+                                <div class="col-xs-3">
+                                    <label for="ex3">Period</label>
+                                    <select class="form-control" id="period" name="period" onchange="addInput()">
+
+                                        {% if hw.period == 'years' %}
+                                            <option value="year" selected>Year</option>
+                                        {% else %}
+                                            <option value="year">Year</option>
+                                        {% endif %}
+
+                                        {% if hw.period == 'days' %}
+                                            <option value="day" selected>Day</option>
+                                        {% else %}
+                                            <option value="day">Days</option>
+                                        {% endif %}
+
+                                        {% if hw.period == 'week' %}
+                                            <option value="week" selected>Week</option>
+                                        {% else %}
+                                            <option value="week">Week</option>
+                                        {% endif %}
+
+                                        {% if hw.period == 'month' %}
+                                            <option value="month" selected>Month</option>
+                                        {% else %}
+                                            <option value="month">Month</option>
+                                        {% endif %}
+
+                                        {% if hw.period == 'quarter' %}
+                                            <option value="quarter" selected>Quarter</option>
+                                        {% else %}
+                                            <option value="quarter">Quarter</option>
+                                        {% endif %}
+
+                                        {% if hw.step == 'semester' %}
+                                            <option value="semester" selected>Semester</option>
+                                        {% else %}
+                                            <option value="semester">Semester</option>
+                                        {% endif %}
+
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="form-group row">
-                                    <div style="overflow-x: scroll;width: 100%; white-space: nowrap;">
-                                        <span id="ratebar"></span>
-                                    </div>
 
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <div class="col-xs-12">
+                                    <label for="rate">Entrer les taux </label><br>
+                                    <form>
+                                        <input type="radio" name="source_rate" value="manual" checked
+                                               style="margin-left: 10px" onchange="onManual()"> Manual
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin: 20px">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-6">
-                                <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1"/>
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                                <div style="overflow-x: scroll;width: 100%; white-space: nowrap;">
+                                    <span id="ratebar"></span>
+                                </div>
+
                             </div>
-                            <div class="col-md-3"></div>
                         </div>
                     </div>
-                </form>
+                    <div class="row" style="margin: 20px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1"/>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </form>
 
 
-                {% block content %}  {% endblock %}
-                </div>
-                </div>
+            {% block content %}  {% endblock %}
+        </div>
+    </div>
 
 </div>
 </div>
@@ -216,7 +218,7 @@ td, th {
 <script type="text/javascript">
 
     window.onload = function () {
-         addInput();
+        addInput();
     }
 
     function addInput() {
@@ -224,24 +226,24 @@ td, th {
         while (foo.firstChild) foo.removeChild(foo.firstChild);
         var maturity = parseFloat(document.getElementById("maturity").value);
         var period = document.getElementById("period").value;
-        var N =  maturity
-        if(period.startsWith("s")){
+        var N = maturity
+        if (period.startsWith("s")) {
             N = maturity * 2
         }
-         if(period.startsWith("q")){
+        if (period.startsWith("q")) {
             N = maturity * 4
         }
 
-        if(period.startsWith("m")){
+        if (period.startsWith("m")) {
             N = maturity * 12
         }
-        if(period.startsWith("w")){
+        if (period.startsWith("w")) {
             N = maturity * 52
         }
-        if(period.startsWith("d")){
+        if (period.startsWith("d")) {
             N = maturity * 280
         }
-        N = N+1
+        N = N + 1
         for (var i = 0; i < N; i++) {
             var element = document.createElement("input");
             element.setAttribute("name", "rate");
