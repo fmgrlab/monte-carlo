@@ -11,21 +11,6 @@ def val(value):
 def percent(value):
     return val(value)*100
 
-
-def get_period_value(period_param):
-    period = str(period_param)
-    if period.lower().startswith('d'):
-        return 250
-    if period.lower().startswith('w'):
-        return 52
-    if period.lower().startswith('m'):
-        return 12
-    if period.lower().startswith('s'):
-        return 2
-    if period.lower().startswith('q'):
-        return 4
-    return 1
-
 class GraphStep:
     def __init__(self, i):
         self.i = i
@@ -79,7 +64,7 @@ class HWCalculator:
         self.jmax = 0
         self.maturity = 0
         self.period ='year'
-        self.nbr_steps = 0
+        self.nbr_steps = 1
         self.volatility = 0.0
         self.alpha = 0.0
 
@@ -92,20 +77,16 @@ class HWCalculator:
         dict['nbr_steps'] = self.nbr_steps
         dict['volatility'] = self.volatility
         dict['alpha'] = self.alpha
+        dict['rates'] = self.rates
         dict['steps'] = [ob.as_json() for ob in self.steps]
+
         return dict
 
-    def execute(self, sig, alpha, maturity, period,rates):
-        period_value = get_period_value(period)
-        N = maturity * period_value
-        dt = 1.0/period_value
-        self.maturity = maturity
-        self.period = period
-        self.nbr_steps = N
-        self.rates = rates
-        self.volatility = sig
-        self.alpha = alpha
-        return self.process(sig, alpha, dt, N,rates)
+    def execute(self):
+        if self.nbr_steps == 0:
+            self.nbr_steps = 1.0
+        dt = float(self.maturity)/float(self.nbr_steps)
+        return self.process(self.volatility, self.alpha, dt, self.nbr_steps,self.rates)
 
     def process(self,sig,alpha,dt, N,rates):
         #Init parameter
