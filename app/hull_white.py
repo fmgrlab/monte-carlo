@@ -92,6 +92,8 @@ class HWCalculator:
             P.append(math.exp(-rates[i - 1] * i * dt))
 
         self.steps[0].a = -math.log(P[1])/dt
+        for node in self.steps[0].nodes:
+            node.rate += self.steps[0].a
 
         for i in range(1, N, 1):
             top_node = min(i,jmax)

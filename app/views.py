@@ -3,9 +3,7 @@ from __future__ import unicode_literals
 import matplotlib
 
 matplotlib.use("Agg")
-from django.shortcuts import render
 from app.hull_white import HWCalculator
-from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 
 
@@ -22,7 +20,7 @@ from pylab import *
 def home(request):
     hwcalculator = HWCalculator()
     rates = []
-    maturity = 5
+    maturity = 4
     dt = 1
     N = int(maturity/dt)
     for i in range(0, N+1, 1):
@@ -44,13 +42,10 @@ def api_hullwhite(request):
     hwcalculator = HWCalculator()
 
     rates = []
-    maturity = 5
-    dt = 1
-    N = int(maturity / dt)
-    for i in range(0, N + 1, 1):
-        rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
-
-    hwcalculator.execute(0.01,0.1, 5, 1,rates)
+    rates.append(0.0382)
+    rates.append(0.0451)
+    rates.append(0.0509)
+    hwcalculator.execute(0.01,0.1, 3, 1,rates)
     return JSONResponse(hwcalculator.as_json())
 
 
