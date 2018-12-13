@@ -53,15 +53,16 @@ def api_hullwhite(request):
     hwc.alpha = alpha
     hwc.volatility = volatility
     hwc.rates = rate_float
-    if success:
-        hwc.execute()
+    for i in range(0, hwc.nbr_steps + 1, 1):
+        hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
+    #if success:
+    hwc.execute()
     return JSONResponse(hwc.as_json())
 
 
 def draw_data(hw):
     fig, ax = plt.subplots()
     N = hw.nbr_steps
-    print(N)
     min_rate = hw.steps[0].nodes[0].rate
     max_rate = min_rate
     for i in range(0,N-1,1):
@@ -80,6 +81,7 @@ def draw_data(hw):
             plot([i,  i+1], [node.rate*100, up.rate*100])
             plot([i,  i+1], [node.rate*100, m.rate*100])
             plot([i , i+1], [node.rate*100, dw.rate*100])
+
     #get_min_rate
 
     ax.set_xlim(0, N+1)
@@ -119,7 +121,7 @@ def parseRequest(request):
 
     period_name = request.GET.get('period', 'year')
     period = get_period_value(period_name)
-    nbr_steps = maturity * period
+    nbr_steps = int(maturity * period)
 
     rates = request.GET.getlist("rate", '')
     rate_float = []
