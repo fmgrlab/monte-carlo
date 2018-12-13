@@ -3,7 +3,11 @@
 
 {% block content %}
 
-    <div class="row" style=" margin: 1%; padding: 10px;border: 1px solid red;min-height: 20cm"></div><br>
+    <div class="row" style=" margin: 1%; padding: 10px;border: 1px solid red;min-height: 20cm">
+
+     <div>{{ graph|safe }}</div>
+
+    </div>
 
     <div class="row" style=" margin: 1%; padding: 1px;overflow-x: scroll">
 

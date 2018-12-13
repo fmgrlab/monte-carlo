@@ -30,8 +30,8 @@ def home(request):
         hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
     #if success:
     hwc.execute()
-    html_fig = draw_data(hwc)
-    return render(request, 'home.html', {"hw": hwc})
+    graph = draw_data(hwc)
+    return render(request, 'home.html', {"hw": hwc,'graph': graph})
 
 
 
