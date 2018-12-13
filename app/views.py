@@ -27,7 +27,7 @@ def home(request):
     N = int(maturity/dt)
     for i in range(0, N+1, 1):
         rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
-    hwcalculator.execute(0.01, 0.1, 5, 1.0 / 2.0,rates)
+    hwcalculator.execute(0.01, 0.1, 5, 1.0 ,rates)
     html_fig = draw_data(hwcalculator)
     return render(request, 'home.html', { "hw": hwcalculator,'div_figure': html_fig})
 
@@ -42,7 +42,15 @@ def about(request):
 
 def api_hullwhite(request):
     hwcalculator = HWCalculator()
-    hwcalculator.execute(0.01,0.1, 5, 1)
+
+    rates = []
+    maturity = 5
+    dt = 1
+    N = int(maturity / dt)
+    for i in range(0, N + 1, 1):
+        rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
+
+    hwcalculator.execute(0.01,0.1, 5, 1,rates)
     return JSONResponse(hwcalculator.as_json())
 
 
@@ -61,7 +69,7 @@ def draw_data(hw):
             plot([i , i+1], [node.rate*100, dw.rate*100])
 
     ax.set_xlim(0, N)
-    ax.set_ylim(-N,N)
+    ax.set_ylim(-10,10)
     ax.set_xlabel('Maturity')
     ax.set_ylabel('Rate')
 
