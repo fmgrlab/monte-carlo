@@ -1,10 +1,30 @@
 from collections import OrderedDict
-import numpy as np
 import math
 
 
 def get_id(i,j):
     return str(i) + "," + str(j)
+
+def val(value):
+    return round(value,3)
+
+def percent(value):
+    return val(value)*100
+
+
+def get_period_value(period_param):
+    period = str(period_param)
+    if period.lower().startswith('d'):
+        return 250
+    if period.lower().startswith('w'):
+        return 52
+    if period.lower().startswith('m'):
+        return 12
+    if period.lower().startswith('s'):
+        return 2
+    if period.lower().startswith('q'):
+        return 4
+    return 1
 
 class GraphStep:
     def __init__(self, i):
@@ -15,14 +35,14 @@ class GraphStep:
     def as_json(self):
         dict = OrderedDict()
         dict['i'] = self.i
-        dict['a'] = self.a
+        dict['a'] = val(self.a)
         dict['nodes'] = [ob.as_json() for ob in self.nodes]
         return dict
 
 
 class GraphNode:
     def __init__(self, i=0, j = 0, pu ="", pm="", pd="", rate = 0, j_up = 0, j_m =0,j_d = 0):
-        self.id = str(i)+","+str(j)
+        self.id = get_id(i,j)
         self.i = i
         self.j = j
         self.rate = rate
@@ -42,14 +62,14 @@ class GraphNode:
         dict = OrderedDict()
         dict['i'] = self.i
         dict['j'] = self.j
-        dict['rate'] = str(self.rate) + "%"
-        dict['q'] = self.q
+        dict['rate'] = str(percent(self.rate)) + " %"
+        dict['q'] = val(self.q)
         dict['j_up'] = self.j_up
         dict['j_m'] = self.j_m
         dict['j_d'] = self.j_d
-        dict['pu'] = self.pu
-        dict['pm'] = self.pm
-        dict['pd'] = self.pd
+        dict['pu'] = val(self.pu)
+        dict['pm'] = val(self.pm)
+        dict['pd'] = val(self.pd)
         return dict
 
 
@@ -57,19 +77,39 @@ class HWCalculator:
     def __init__(self):
         self.steps = []
         self.jmax = 0
+        self.maturity = 0
+        self.period ='year'
+        self.nbr_steps = 0
+        self.volatility = 0.0
+        self.alpha = 0.0
+
 
     def as_json(self):
         dict = OrderedDict()
+        dict['maturity'] = self.maturity
+        dict['jmax'] = self.jmax
+        dict['period'] = self.period
+        dict['nbr_steps'] = self.nbr_steps
+        dict['volatility'] = self.volatility
+        dict['alpha'] = self.alpha
         dict['steps'] = [ob.as_json() for ob in self.steps]
         return dict
 
-    def execute(self, sig, alpha, maturity, dt,rates):
-        return self.process(sig, alpha, maturity, dt,rates)
+    def execute(self, sig, alpha, maturity, period,rates):
+        period_value = get_period_value(period)
+        N = maturity * period_value
+        dt = 1.0/period_value
+        self.maturity = maturity
+        self.period = period
+        self.nbr_steps = N
+        self.rates = rates
+        self.volatility = sig
+        self.alpha = alpha
+        return self.process(sig, alpha, dt, N,rates)
 
-    def process(self, sig, alpha, maturity, dt,rates):
+    def process(self,sig,alpha,dt, N,rates):
         #Init parameter
 
-        N = int(maturity/dt)
         M = -alpha * dt
         dr = sig * math.sqrt(3 * dt)
         jmax = int(math.ceil(-0.1835 / M))

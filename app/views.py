@@ -20,12 +20,10 @@ from pylab import *
 def home(request):
     hwcalculator = HWCalculator()
     rates = []
-    maturity = 4
-    dt = 1
-    N = int(maturity/dt)
-    for i in range(0, N+1, 1):
-        rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
-    hwcalculator.execute(0.01, 0.1, 5, 1.0 ,rates)
+    rates.append(0.0382)
+    rates.append(0.0451)
+    rates.append(0.0509)
+    hwcalculator.execute(0.01, 0.1, 3, 'year' ,rates)
     html_fig = draw_data(hwcalculator)
     return render(request, 'home.html', { "hw": hwcalculator,'div_figure': html_fig})
 
@@ -45,14 +43,15 @@ def api_hullwhite(request):
     rates.append(0.0382)
     rates.append(0.0451)
     rates.append(0.0509)
-    hwcalculator.execute(0.01,0.1, 3, 1,rates)
+    hwcalculator.execute(0.01,0.1, 3, 'years',rates)
     return JSONResponse(hwcalculator.as_json())
 
 
 def draw_data(hw):
-    N = len(hw.steps)-1
     fig, ax = plt.subplots()
-    for i in range(0,N,1):
+    N = hw.nbr_steps
+    print(N)
+    for i in range(0,N-1,1):
         top_node = min(i,hw.jmax)
         for j in range(-top_node,top_node+1,1):
             node = hw.steps[i].nodes[j+top_node]
