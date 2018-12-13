@@ -9,7 +9,7 @@ def val(value):
     return round(value,3)
 
 def percent(value):
-    return val(value)*100
+    return round(value*100,2)
 
 class GraphStep:
     def __init__(self, i):
@@ -42,6 +42,8 @@ class GraphNode:
         else:
             self.q = 0
 
+    def get_rate(self):
+        return str(val(self.rate*100))+"%"
 
     def as_json(self):
         dict = OrderedDict()

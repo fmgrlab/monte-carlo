@@ -3,76 +3,80 @@
 
 {% block content %}
 
+    <div class="row" style=" margin: 1%; padding: 10px;border: 1px solid red;min-height: 20cm"></div><br>
+
+    <div class="row" style=" margin: 1%; padding: 1px;overflow-x: scroll">
+
+            <table cellpadding="5" class="table table-bordered table-hover table-condensed">
+                <tr>
+                    <th>Node</th>
+
+                    {% for hwstep in hw.steps %}
+
+                        {% for item in hwstep.nodes %}
+                            <td style="font-weight: bold">
+                                {{ item.id }}
+                            </td>{% endfor %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <th>Rate</th>
+
+                    {% for hwstep in hw.steps %}
+
+                        {% for item in hwstep.nodes %}
+                            <td>
+                                {{ item.as_json.rate}}
+                            </td>{% endfor %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <th>Pu</th>
+
+                    {% for hwstep in hw.steps %}
+
+                        {% for item in hwstep.nodes %}
+                            <td>
+                                {{ item.pu|floatformat:4 }}
+                            </td>{% endfor %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <th>Pm</th>
+
+                    {% for hwstep in hw.steps %}
+
+                        {% for item in hwstep.nodes %}
+                            <td>
+                                {{ item.pm |floatformat:4 }}
+                            </td>{% endfor %}
+                    {% endfor %}
+                </tr>
+
+            <tr>
+                    <th>Pd</th>
+
+                    {% for hwstep in hw.steps %}
+
+                        {% for item in hwstep.nodes %}
+                            <td>
+                                {{ item.pd |floatformat:4 }}
+                            </td>{% endfor %}
+                    {% endfor %}
+                </tr>
+
+            </table>
 
 
-    <div class="row" style="margin: 1%">
+        </div>
 
 
-                    <div class="col-md-4" style="height: 650px;padding: 5px;border: 1px solid #ecf0f1">
-                        <h5>Transition probability</h5>
-                        <table  cellpadding="5" class="table table-bordered table-hover table-condensed"
-                               style="width: 100%;overflow: scroll;height: 100%">
-                            <thead>
-                            <tr>
-
-                                <th>
-                                    Node
-                                </th>
-
-                                <th>
-                                    rate
-                                </th>
-
-                                <th>
-                                    Pu
-                                </th>
-                                <th>
-                                    Pm
-                                </th>
-                                <th>
-                                    Pd
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            {% for hwstep in hw.steps %}
-
-                                {% for item in hwstep.nodes %}
-
-                                    <tr>
-
-                                        <td>
-                                            {{ item.id }}
-                                        </td>
-
-                                        <td>
-                                            {{ item.rate|floatformat:4 }}
-                                        </td>
-
-                                        <td>
-                                            {{ item.pu|floatformat:4}}
-                                        </td>
-                                        <td>
-                                            {{ item.pm|floatformat:4 }}
-                                        </td>
-                                        <td>
-                                            {{ item.pd|floatformat:4}}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endfor %}
-                            </tbody>
-                        </table>
 
 
-                    </div>
 
-                    <div class="col-md-1"></div>
-
-                    <div class="col-md-7" style="height: 650px;padding: 5px;background-color: #ecf0f1">
-                        <div>{{ div_figure|safe }}</div>
-                    </div>
-                </div>
 
 {% endblock %}
+
+

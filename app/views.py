@@ -20,18 +20,18 @@ from pylab import *
 def home(request):
     maturity, period_name, nbr_steps, alpha, volatility, rate_float, success = parseRequest(request=request)
     hwc = HWCalculator()
-    hwc.maturity = maturity
+    hwc.maturity = 3
     hwc.period = period_name
-    hwc.nbr_steps = nbr_steps
+    hwc.nbr_steps = 10
     hwc.alpha = alpha
     hwc.volatility = volatility
     hwc.rates = rate_float
-    if success:
-        hwc.execute()
-        html_fig = draw_data(hwc)
-        return render(request, 'home.html', {"hw": hwc, 'div_figure': html_fig})
-    else :
-        return render(request, 'home_error.html', {"hw": hwc})
+    for i in range(0, hwc.nbr_steps + 1, 1):
+        hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
+    #if success:
+    hwc.execute()
+    html_fig = draw_data(hwc)
+    return render(request, 'home.html', {"hw": hwc})
 
 
 
@@ -43,7 +43,6 @@ def documentation(request):
 
 def about(request):
     return render(request, 'about.html')
-
 
 def api_hullwhite(request):
     maturity, period_name, nbr_steps, alpha, volatility, rate_float, success = parseRequest(request=request)
@@ -87,20 +86,40 @@ def draw_data(hw):
 
 
 def parseRequest(request):
-    maturity = float(request.GET.get('maturity', 3))
-    alpha = float(request.GET.get('alpha', 0.1))
-    volatility = float(request.GET.get('volatility', 0.01))
+    try:
+        maturity = math.fabs(float(request.GET.get('maturity', 3)))
+        if maturity == 0.0:
+            maturity = 1
+    except:
+        maturity = 3.0
+
+    try:
+        alpha = math.fabs(float(request.GET.get('alpha', 0.1)))
+        if alpha == 0.0 :
+            alpha = 0.1
+    except:
+
+        alpha = 0.1
+
+    try:
+        volatility = math.fabs(float(request.GET.get('volatility', 0.01)))
+        if volatility == 0.0 :
+            volatility = 0.01
+    except :
+         volatility = 0.01
+
     period_name = request.GET.get('period', 'year')
     period = get_period_value(period_name)
+    nbr_steps = maturity * period
 
     rates = request.GET.getlist("rate", '')
-    nbr_steps = maturity*period
     rate_float = []
     for item in rates:
         try:
             rate_float.append(double(item))
         except :
             pass
+
 
     return maturity,period_name,nbr_steps,alpha,volatility,rate_float,len(rate_float) >= (nbr_steps+1)
 
@@ -125,3 +144,6 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
+
+
+#<div>{{ div_figure|safe }}</div>

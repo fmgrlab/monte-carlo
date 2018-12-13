@@ -14,29 +14,51 @@
 
 </head>
 <style>
-    table, tr td {
-        border: 1px solid red
-    }
-
-    tbody {
-        display: block;
-        max-height: 90%;
-        overflow-y: scroll;
-    }
-
-    thead, tbody tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    thead {
-        width: 100%;
-    }
 
     table {
-        width: 100%;
-    }
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top: 1px solid grey;
+}
+
+td, th {
+  margin: 0;
+  border: 1px solid grey;
+  white-space: nowrap;
+  border-top-width: 0px;
+}
+
+.headcol {
+  position: absolute;
+  width: 5em;
+  left: 0;
+  top: auto;
+  border-top-width: 1px;
+  /*only relevant for first row*/
+  margin-top: -1px;
+  /*compensate for top border*/
+}
+
+.headcol2 {
+  position: absolute;
+  width: 5em;
+  right: 0;
+  top: auto;
+  border-top-width: 1px;
+  /*only relevant for first row*/
+  margin-top: -1px;
+  /*compensate for top border*/
+  background-color: white;
+}
+
+.headcol:before {
+  content: 'Row ';
+}
+
+.long {
+  background: yellow;
+  letter-spacing: 1em;
+}
 
 </style>
 <body onc>
@@ -72,8 +94,6 @@
 
             </nav>
 
-            <br><br><br>
-
 
                 <div class="page-header" style="margin: 1%">
                     <h1>
@@ -83,7 +103,7 @@
                     <p>
                         The purpose of this website is to implement the interest rate model Hull White
                 </div>
-                <br><br><br>
+                <br><br>
 
                 <form role="form" id="computeForm" method="get" action="/">
                     <div class="container-fluid">
@@ -222,7 +242,6 @@
             N = maturity * 280
         }
         N = N+1
-        alert("Draw :" + N +" Maturity :"+maturity +" Period :"+ period)
         for (var i = 0; i < N; i++) {
             var element = document.createElement("input");
             element.setAttribute("name", "rate");
