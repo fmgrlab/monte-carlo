@@ -105,7 +105,7 @@
             </div>
             <br><br>
 
-            <form role="form" id="computeForm" method="get" action="/">
+            <form role="form" name="computeForm" id="computeForm" method="get" action="/">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-5">
@@ -114,19 +114,19 @@
                                 <div class="col-xs-3">
                                     <label for="volatility">Volatility</label>
                                     <input class="form-control" name="volatility" value="{{ hw.volatility }}"
-                                           type="number" step="0.01" min="0.001">
+                                           type="number">
                                 </div>
 
                                 <div class="col-xs-3">
                                     <label for="alpha">Alpha </label>
                                     <input class="form-control" id="alpha" name="alpha" value="{{ hw.alpha }}"
-                                           type="number" step="0.01" min="0.001">
+                                           type="number">
                                 </div>
 
                                 <div class="col-xs-3">
                                     <label for="maturity">Maturity (year)</label>
                                     <input class="form-control" type="number" id="maturity" name="maturity"
-                                           value="{{ hw.maturity }}" step="0.1" onchange="addInput()" min="0.001">
+                                           value="{{ hw.maturity }}" onchange="addInput()">
                                 </div>
 
                                 <div class="col-xs-3">
@@ -219,6 +219,7 @@
 
     window.onload = function () {
         addInput();
+        onManual()
     }
 
     function addInput() {
@@ -256,7 +257,14 @@
             foo.appendChild(element);
         }
     }
+    function onManual() {
+        var input_js = ({{ hw.rates|safe }})
+        alert("rate leng" + input_js.length)
+        for (var i = 0; i < input_js.length; i++) {
+            var element = document.getElementById("rate" + i);
+            element.value = input_js[i];
+        }
+    }
 </script>
-
 </body>
 </html>

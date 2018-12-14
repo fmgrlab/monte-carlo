@@ -21,10 +21,13 @@ def home(request):
     hwc.rates = rate_float
     for i in range(0, hwc.nbr_steps + 1, 1):
         hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
-    # if success:
+
+    #if success:
     hwc.execute()
     graph = draw_data(hwc)
     return render(request, 'home.html', {"hw": hwc, 'graph': graph})
+   # else :
+    #    return render(request, 'home_error.html', {"hw": hwc})
 
 
 def documentation(request):
@@ -79,7 +82,6 @@ def draw_data(hw):
     ax.set_ylim(-min_rate * 100 - 1, max_rate * 100 + 1)
     ax.set_xlabel('Maturity')
     ax.set_ylabel('Rate')
-
     ax.set_title('Hull White interest rate')
     ax.grid(True)
     html_fig = mpld3.fig_to_html(fig, template_type='general')
@@ -90,14 +92,14 @@ def draw_data(hw):
 def parseRequest(request):
     try:
         maturity = math.fabs(float(request.GET.get('maturity', 3)))
-        if maturity == 0.0:
+        if maturity < 0.0 or maturity > 100:
             maturity = 1
     except:
         maturity = 3.0
 
     try:
         alpha = math.fabs(float(request.GET.get('alpha', 0.1)))
-        if alpha == 0.0:
+        if alpha < 0.001 or alpha > 100:
             alpha = 0.1
     except:
 
@@ -105,7 +107,7 @@ def parseRequest(request):
 
     try:
         volatility = math.fabs(float(request.GET.get('volatility', 0.01)))
-        if volatility == 0.0:
+        if volatility < 0.0 or volatility > 100:
             volatility = 0.01
     except:
         volatility = 0.01
