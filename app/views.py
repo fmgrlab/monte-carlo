@@ -11,23 +11,15 @@ from pylab import *
 
 
 def home(request):
-    maturity, period_name, nbr_steps, alpha, volatility, rate_float, success = parseRequest(request=request)
-    hwc = HWCalculator()
-    hwc.maturity = 3
-    hwc.period = period_name
-    hwc.nbr_steps = 10
-    hwc.alpha = alpha
-    hwc.volatility = volatility
-    hwc.rates = rate_float
-    for i in range(0, hwc.nbr_steps + 1, 1):
-        hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
-
-    #if success:
-    hwc.execute()
-    graph = draw_data(hwc)
-    return render(request, 'home.html', {"hw": hwc, 'graph': graph})
-   # else :
-    #    return render(request, 'home_error.html', {"hw": hwc})
+    hwc = parseRequest(request=request)
+    if request.POST:
+        if len(hwc.rates) >= hwc.nbr_steps +1 :
+            hwc.execute()
+            graph = draw_data(hwc)
+            return render(request, 'home.html', {"hw": hwc, 'graph': graph})
+        else :
+            return render(request, 'home_error.html', {"hw": hwc})
+    return render(request, 'home_parent.html', {"hw": hwc})
 
 
 def documentation(request):
@@ -90,42 +82,46 @@ def draw_data(hw):
 
 
 def parseRequest(request):
+    hwc = HWCalculator()
     try:
-        maturity = math.fabs(float(request.GET.get('maturity', 3)))
-        if maturity < 0.0 or maturity > 100:
-            maturity = 1
+        maturity = math.fabs(float(request.POST.get('maturity')))
+        if maturity < 0.01 or maturity > 100:
+            maturity = 3
     except:
-        maturity = 3.0
+        maturity = 3
+
+    hwc.maturity = maturity
 
     try:
-        alpha = math.fabs(float(request.GET.get('alpha', 0.1)))
+        alpha = math.fabs(float(request.POST.get('alpha')))
         if alpha < 0.001 or alpha > 100:
             alpha = 0.1
     except:
-
         alpha = 0.1
 
+    hwc.alpha = alpha
+
     try:
-        volatility = math.fabs(float(request.GET.get('volatility', 0.01)))
+        volatility = math.fabs(float(request.POST.get('volatility')))
         if volatility < 0.0 or volatility > 100:
             volatility = 0.01
     except:
         volatility = 0.01
 
-    period_name = request.GET.get('period', 'year')
+    hwc.volatility = volatility
+    period_name = request.GET.get('period')
     period = get_period_value(period_name)
-    nbr_steps = int(maturity * period)
-
-    rates = request.GET.getlist("rate", '')
+    hwc.nbr_steps = int(maturity * period)
+    hwc.period = period_name
+    rates_p = request.POST.getlist("rate")
     rate_float = []
-    for item in rates:
+    for item in rates_p:
         try:
             rate_float.append(double(item))
         except:
             pass
-
-    return maturity, period_name, nbr_steps, alpha, volatility, rate_float, len(rate_float) >= (nbr_steps + 1)
-
+    hwc.rates = rate_float
+    return hwc
 
 def get_period_value(period_param):
     period = str(period_param)

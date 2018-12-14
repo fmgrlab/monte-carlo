@@ -72,6 +72,7 @@ class HWCalculator:
         self.nbr_steps = 1
         self.volatility = 0.0
         self.alpha = 0.0
+        self.rates = []
 
     def as_json(self):
         dict = OrderedDict()
