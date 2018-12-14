@@ -22,6 +22,15 @@ def home(request):
     return render(request, 'home_parent.html', {"hw": hwc})
 
 
+def auto_generate(request):
+    hwc = parseRequest(request=request)
+    hwc.rates = []
+    for i in range(0, hwc.nbr_steps + 1, 1):
+        hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
+    hwc.execute()
+    graph = draw_data(hwc)
+    return render(request, 'test.html', {"hw": hwc, 'graph': graph})
+
 def documentation(request):
     return render(request, 'document.html')
 
@@ -31,17 +40,21 @@ def about(request):
 
 
 def api_hullwhite(request):
-    maturity, period_name, nbr_steps, alpha, volatility, rate_float, success = parseRequest(request=request)
+    hwc = parseRequest(request=request)
+    if len(hwc.rates) >= hwc.nbr_steps + 1:
+        hwc.execute()
+    return JsonResponse(hwc.as_json())
+
+def api_hullwhite_auto(request):
     hwc = HWCalculator()
-    hwc.maturity = maturity
-    hwc.period = period_name
-    hwc.nbr_steps = nbr_steps
-    hwc.alpha = alpha
-    hwc.volatility = volatility
-    hwc.rates = rate_float
-    for i in range(0, hwc.nbr_steps + 1, 1):
+    hwc.maturity = 5
+    hwc.alpha = 0.1
+    hwc.volatility = 0.014
+    hwc.period ="year"
+    hwc.nbr_steps = 5
+    hwc.rates = []
+    for i in range(0, 6, 1):
         hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
-    # if success:
     hwc.execute()
     return JsonResponse(hwc.as_json())
 
@@ -86,9 +99,9 @@ def parseRequest(request):
     try:
         maturity = math.fabs(float(request.POST.get('maturity')))
         if maturity < 0.01 or maturity > 100:
-            maturity = 3
+            maturity = 5
     except:
-        maturity = 3
+        maturity = 5
 
     hwc.maturity = maturity
 
@@ -109,7 +122,7 @@ def parseRequest(request):
         volatility = 0.01
 
     hwc.volatility = volatility
-    period_name = request.GET.get('period')
+    period_name = request.GET.get('period','year')
     period = get_period_value(period_name)
     hwc.nbr_steps = int(maturity * period)
     hwc.period = period_name
