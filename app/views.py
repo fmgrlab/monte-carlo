@@ -10,6 +10,9 @@ import mpld3
 from pylab import *
 
 
+def base_home(request):
+    return render(request, 'base_home.html')
+
 def home(request):
     hwc = parseRequest(request=request)
     if request.POST:

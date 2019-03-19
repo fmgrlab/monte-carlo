@@ -16,12 +16,9 @@ Including another URLconf
 
 from django.conf.urls import include, url
 from django.contrib import admin
-from app import views
+from bsm import  views
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', views.base_home, name='home'),
-    url(r'^hwhite/', include('app.urls')),
-    url(r'^bsm/', include('bsm.urls')),
-    url(r'^mcarlo/', include('monte_carlo.urls')),
+    url(r'^$', views.bsm_home, name='home'),
 ]
