@@ -13,54 +13,6 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
-<style>
-
-    table {
-        border-collapse: separate;
-        border-spacing: 0;
-        border-top: 1px solid grey;
-    }
-
-    td, th {
-        margin: 0;
-        border: 1px solid grey;
-        white-space: nowrap;
-        border-top-width: 0px;
-    }
-
-    .headcol {
-        position: absolute;
-        width: 5em;
-        left: 0;
-        top: auto;
-        border-top-width: 1px;
-        /*only relevant for first row*/
-        margin-top: -1px;
-        /*compensate for top border*/
-    }
-
-    .headcol2 {
-        position: absolute;
-        width: 5em;
-        right: 0;
-        top: auto;
-        border-top-width: 1px;
-        /*only relevant for first row*/
-        margin-top: -1px;
-        /*compensate for top border*/
-        background-color: white;
-    }
-
-    .headcol:before {
-        content: 'Row ';
-    }
-
-    .long {
-        background: yellow;
-        letter-spacing: 1em;
-    }
-
-</style>
 <body onc>
 
 <div class="container-fluid">
@@ -74,7 +26,7 @@
                         <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
                             class="icon-bar"></span><span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Hull White</a>
+                    <a class="navbar-brand" href="/">FMGRLAB</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -82,16 +34,18 @@
 
 
                     </ul>
+
+
+
                     <ul class="nav navbar-nav navbar-right">
+                         {% block navigation %}
                         <li>
-                            <a href="/hwhite/">Hull White</a>
+                            <a href="/document/">Resources</a>
                         </li>
                          <li>
-                            <a href="/mcarlo/">Monte Carlo</a>
+                            <a href="/about/">About</a>
                         </li>
-                         <li>
-                            <a href="/bsm/">Black Schole</a>
-                        </li>
+                        {% endblock %}
                     </ul>
                 </div>
 
@@ -99,24 +53,12 @@
 
 
 
-            {% block content %}
 
-              <div class="page-header" style="margin: 1%">
-
-
-
-                <h1>
-                    Hull White
-                    <small> Numerical implementation of Hull White model using python</small>
-                </h1>
-                <p>
-                    The purpose of this website is to implement the interest rate model Hull White
-            </div>
-            <br>
-            <br>
-            {% endblock %}
         </div>
     </div>
+     {% block content %}
+
+    {% endblock %}
 
 </div>
 </div>

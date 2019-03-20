@@ -17,10 +17,14 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from app import views
+from m2_hull_white import  views
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', views.base_home, name='home'),
+    url(r'^document/', views.documentation, name='document'),
+    url(r'^about/', views.about, name='about'),
+    url(r'^$', views.home, name='home'),
+
     url(r'^hwhite/', include('app.urls')),
     url(r'^bsm/', include('bsm.urls')),
     url(r'^mcarlo/', include('monte_carlo.urls')),

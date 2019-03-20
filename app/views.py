@@ -34,13 +34,6 @@ def auto_generate(request):
     graph = draw_data(hwc)
     return render(request, 'test.html', {"hw": hwc, 'graph': graph})
 
-def documentation(request):
-    return render(request, 'document.html')
-
-
-def about(request):
-    return render(request, 'about.html')
-
 
 def api_hullwhite(request):
     hwc = parseRequest(request=request)
