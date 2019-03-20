@@ -9,10 +9,6 @@ from django.shortcuts import render
 import mpld3
 from pylab import *
 
-
-def base_home(request):
-    return render(request, 'base_home.html')
-
 def home(request):
     hwc = parseRequest(request=request)
     if request.POST:
@@ -32,7 +28,7 @@ def auto_generate(request):
         hwc.rates.append(0.08 - 0.05 * math.exp(-0.18 * i))
     hwc.execute()
     graph = draw_data(hwc)
-    return render(request, 'test.html', {"hw": hwc, 'graph': graph})
+    return render(request, 'test_parent.html', {"hw": hwc, 'graph': graph})
 
 
 def api_hullwhite(request):
