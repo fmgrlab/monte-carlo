@@ -37,12 +37,11 @@
 </style>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
+<div class="container">
+    <div class="row" >
         <div class="col-md-12">
-            <nav class="navbar navbar-default navbar-inverse" role="navigation">
+            <nav class="navbar navbar-default navbar-inverse" role="navigation"  style="margin: 1%;border-radius: 0px" >
                 <div class="navbar-header">
-
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                 </button> <a class="navbar-brand" href="/">FMGRLAB</a>
@@ -50,8 +49,6 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-
-
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
@@ -60,8 +57,8 @@
 
             </nav>
 
-
-            <div class="page-header" style="margin: 1%">
+<br><br>
+            <div class="page-header" style="margin: 0.3%">
                 <h4>
                    The convergency of binomial pricing to black schole model
                 </h4>
@@ -72,8 +69,8 @@
                 </p>
             </div>
             <br>
-            <div class="row" style="margin: 1%">
-                <div class="col-md-2 border_1" style="height: 650px; padding: 1%;margin-right: 10px" >
+            <div class="row" style="margin: 0.3%">
+                <div class="col-md-2" style="height: 650px" >
                     <h4>
                         European option.
                     </h4>
@@ -195,23 +192,20 @@
                             </div>
                         </div>
 
+ <input type="submit" class="btn btn-success btn-block"> </input>
 
-                        <div class="container-fluid">
-
-                            <input type="submit" class="btn btn-success" style="width: 100%"> </input>
-                        </div>
                     </form>
                 </div>
-                <div class="col-md-7 border_1" style="height: 650px;padding: 10px;margin-right: 30px; margin-left: 30px">
+                <div class="col-md-8" style="height: 650px">
 
-                    <div id="chart_div" class="row" style="height: 97%;padding: 2%"></div>
+                    <div id="chart_div" class="row" style="height: 97%;"></div>
 
                 </div>
 
-                <div class="col-md-2 border_1" style="height: 650px;padding: 5px">
+                <div class="col-md-2" style="height: 650px">
 
                     <div  style="width: 100%;height: 40%">
-                        <h5>Result analyze</h5>
+                        <h4>Result analyze</h4>
                         <table class="table table-bordered table-hover table-condensed">
                             <tbody>
                             <tr>
@@ -276,13 +270,14 @@
                             </tbody>
                         </table>
                     </div>
-                    <h5>Report</h5>
+                    <br><br>
+                    <h4>Report</h4>
                     <hr>
                     <table class="table table-bordered table-hover table-condensed" style="width: 100%;overflow: scroll;height: 45%">
                         <thead>
                         <tr>
                             <th>
-                                Steps
+                                N
                             </th>
                             <th>
                                 BOPM
@@ -301,10 +296,10 @@
                                     {{ item.step  }}
                                 </td>
                                 <td>
-                                    {{ item.bopm|floatformat:4}}$
+                                    {{ item.bopm|floatformat:4}}
                                 </td>
                                 <td>
-                                    {{ item.bsm|floatformat:4 }}$
+                                    {{ item.bsm|floatformat:4 }}
                                 </td>
                             </tr>
                         {% endfor %}
