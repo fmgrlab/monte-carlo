@@ -21,4 +21,5 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', views.mcarlo_home, name='home'),
+    url(r'^api/$', views.api_monte_carlo, name='api'),
 ]
