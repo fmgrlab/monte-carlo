@@ -4,22 +4,22 @@ from collections import OrderedDict
 
 class Param:
     def __init__(self):
-        self.stock_initial = 0
-        self.stock_return = 0
+        self.stock_initial = 1
+        self.stock_return = 2
 
-        self.market_volatility = 0
-        self.market_return = 0
+        self.market_volatility = 3
+        self.market_return = 45
 
-        self.volatility_initial = 0
-        self.volatility_long = 0
-        self.volatility_speed = 0
-        self.volatility_sigma = 0
+        self.volatility_initial = 10
+        self.volatility_long = 11
+        self.volatility_speed = 12
+        self.volatility_sigma = 14
 
-        self.maturity = 0
-        self.number_of_step = 0
-        self.correlation_stock_market = 0
-        self.correlation_stock_volatility = 0
-        self.b = 0
+        self.maturity = 15
+        self.number_of_step = 16
+        self.correlation_stock_market = 4
+        self.correlation_stock_volatility = 10
+        self.b = 21
 
     def as_json(self):
         dict = OrderedDict()
