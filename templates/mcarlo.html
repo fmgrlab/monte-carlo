@@ -32,17 +32,17 @@
                                 <div class="col-xs-1">
                                     <label for="maturity">Maturity</label>
                                     <input class="form-control" id="maturity" name="maturity"
-                                           value="{{ param.maturity }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                           value="{{ param.maturity }}" onkeypress="return isNumberKey(event)">
                                 </div>
                                   <div class="col-xs-1">
                                     <label for="step_number">N</label>
                                     <input class="form-control" id="step_number" name="step_number"
-                                           value="{{ param.number_of_step }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                           value="{{ param.number_of_step }}" onkeypress="return isNumberKey(event)">
                                 </div>
                                 <div class="col-xs-1">
                                     <label for="stock_return" lang="latex">\mu_s</label>
                                     <input class="form-control" id="stock_return" name="stock_return"
-                                           value="{{ param.stock_return }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                           value="{{ param.stock_return }}">
                                 </div>
                                  <div class="col-xs-1">
                                     <label for="market_return" lang="latex">\mu_m</label>
@@ -72,17 +72,17 @@
                                 <div class="col-xs-1">
                                     <label for="market_volatility"  lang="latex">\sigma_m</label>
                                     <input class="form-control" id="market_volatility" name="market_volatility"
-                                           value="{{ param.market_volatility }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                           value="{{ param.market_volatility }}">
                                 </div>
                                 <div class="col-xs-1">
                                     <label for="maturity">b</label>
                                     <input class="form-control" id="b" name="b"
-                                           value="{{ param.b }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                           value="{{ param.b }}" onchange="addInput()"  pattern="([0-9]+\.)?[0-9]+" >
                                 </div>
                                  <div class="col-xs-1">
                                     <label for="correlation_stock_volatility" lang="latex">\rho_{sv}</label>
                                     <input class="form-control" id="correlation_stock_volatility" name="correlation_stock_volatility"
-                                           value="{{ param.correlation_stock_volatility }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                           value="{{ param.correlation_stock_volatility }}"  pattern="([0-9]+\.)?[0-9]+" >
                                 </div>
                                 <div class="col-xs-1">
                                     <label for="correlation_stock_market" lang="latex">\rho_{sm}</label>

@@ -41,12 +41,14 @@ class Param:
         return dict
 
 
+#Rename to price
 class Payoff:
 
     def __init__(self):
         self.strike= 0
         self.iteration_number = 0
         self.price = 0
+        self.type = 1
         self.std_error = 0
         self.confidence_up =0
         self.confidence_down = 0

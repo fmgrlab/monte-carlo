@@ -20,5 +20,11 @@ from monte_carlo import  views
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', views.mcarlo_home, name='home'),
+    url(r'^api/iteration$', views.api_iteration, name='api-iteration'),
+    url(r'^api/risk', views.api_risk, name='api-risk'),
+    url(r'^api/volatility', views.api_volatility, name='api-volatility'),
+
+    url(r'^demo/iteration$', views.demo_iteration, name='api-iteration'),
+    url(r'^demo/risk', views.demo_risk, name='api-risk'),
+    url(r'^demo/volatility', views.demo_volatility, name='api-volatility'),
 ]
