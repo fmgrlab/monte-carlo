@@ -6,17 +6,21 @@ from django.shortcuts import render
 from monte_carlo.domain import  *
 from monte_carlo.engine import Engine
 
+
+def home(request):
+    return render(request, 'index.html')
+
 def demo_iteration(request):
     param = parse_param(request)
-    return render(request, 'mcarlo.html',{"param": param})
+    return render(request, 'mcarlo_iteration.html',{"param": param})
 
 def demo_volatility(request):
     param = parse_param(request)
-    return render(request, 'mcarlo.html',{"param": param})
+    return render(request, 'mcarlo_volatility.html',{"param": param})
 
 def demo_risk(request):
     param = parse_param(request)
-    return render(request, 'mcarlo.html',{"param": param})
+    return render(request, 'mcarlo_risk.html',{"param": param})
 
 def api_volatility(request):
     param = parse_param(request)
@@ -35,8 +39,6 @@ def api_iteration(request):
     output = OutPut()
     output.param = param
     engine = Engine(param)
-    payoffs = engine.compute_all_prices(strike=100, type=1)
-    output.payoffs = payoffs
     return JsonResponse(output.as_json())
 
 

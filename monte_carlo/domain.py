@@ -20,6 +20,7 @@ class Param:
         self.correlation_stock_market = 4
         self.correlation_stock_volatility = 10
         self.b = 21
+        self.dt = float(self.maturity)/self.number_of_step
 
     def as_json(self):
         dict = OrderedDict()

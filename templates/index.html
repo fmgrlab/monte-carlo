@@ -1,9 +1,5 @@
-{% extends "base_app.html" %}
-
-
-
-            {% block content %}
-
+{% extends "home.html" %}
+     {% block content %}
 
              <div class="page-header" style="margin: 5%">
                 <h1>
@@ -26,7 +22,7 @@ The first Hull–White model was described by John C. Hull and Alan White in 199
                             </p>
                                                         <br>
                             <br>
-                            <a class="btn btn-block  btn-primary" href="/hwhite/" role="button">Hull White</a>
+                            <a class="btn btn-block  btn-primary" href="/demo/iteration/" role="button">Iteration</a>
                         </div>
                         <div class="col-md-4">
                               <p>
@@ -36,7 +32,7 @@ The first Hull–White model was described by John C. Hull and Alan White in 199
 
                             </p>                            <br>
                             <br>
-                            <a class="btn btn-block  btn-primary" href="/mcarlo/" role="button">Monte Carlo</a>
+                            <a class="btn btn-block  btn-primary" href="/demo/risk/" role="button">Risk</a>
                         </div>
                         <div class="col-md-4">
                               <p>
@@ -46,15 +42,10 @@ The first Hull–White model was described by John C. Hull and Alan White in 199
 
                             </p>
                             <br>                            <br>
-                             <a class="btn btn-block  btn-primary" href="/bsm/" role="button">Convergence</a>
+                             <a class="btn btn-block  btn-primary" href="/demo/volatility/" role="button">Volatility</a>
 
                         </div>
                         <div class="col-md-3"></div>
                     </div>
 
-
-
-
-            {% endblock %}
-        </div>
-    </div>
+    {% endblock %}

@@ -1,0 +1,133 @@
+{% extends "home.html" %}
+
+{% block content %}
+ <div class="page-header" style="margin: 1%">
+                <h4>
+                     Effect of stochastic volatility
+                </h4>
+                <br>
+                 Effect of stochastic volatility
+                <p>
+                    The purpose of this website is to implement the interest rate model Hull- White one-factor using the trinomial methdo</div>
+            <br><br>
+</div>
+
+ <form role="form" name="computeForm" id="computeForm" method="post" action="/">
+            {% csrf_token %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+
+                                <div class="col-xs-1">
+                                    <label for="stock_initial">So</label>
+                                    <input class="form-control" name="stock_initial" id = "stock_initial" value="{{ param.stock_initial }}"
+                                           onkeypress="return isNumberKey(event)">
+                                </div>
+
+                                <div class="col-xs-1">
+                                    <label for="maturity">Maturity</label>
+                                    <input class="form-control" id="maturity" name="maturity"
+                                           value="{{ param.maturity }}" onkeypress="return isNumberKey(event)">
+                                </div>
+                                  <div class="col-xs-1">
+                                    <label for="step_number">N</label>
+                                    <input class="form-control" id="step_number" name="step_number"
+                                           value="{{ param.number_of_step }}" onkeypress="return isNumberKey(event)">
+                                </div>
+                                <div class="col-xs-1">
+                                    <label for="stock_return" lang="latex">\mu_s</label>
+                                    <input class="form-control" id="stock_return" name="stock_return"
+                                           value="{{ param.stock_return }}">
+                                </div>
+                                 <div class="col-xs-1">
+                                    <label for="market_return" lang="latex">\mu_m</label>
+                                    <input class="form-control" id="market_return" name="market_return"
+                                           value="{{ param.market_return }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                </div>
+                                 <div class="col-xs-1">
+                                    <label for="volatility_speed" lang="latex">\kappa</label>
+                                    <input class="form-control" id="volatility_speed" name="volatility_speed"
+                                           value="{{ param.volatility_speed }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                </div>
+                                 <div class="col-xs-1">
+                                    <label for="volatility_long" lang="latex">\theta</label>
+                                    <input class="form-control" id="volatility_long" name="volatility_long"
+                                           value="{{ param.volatility_long }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                </div>
+                                 <div class="col-xs-1">
+                                    <label for="volatility_initial" lang="latex" >V_0</label>
+                                    <input class="form-control" id="volatility_initial" name="volatility_initial"
+                                           value="{{ param.volatility_initial }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                </div>
+                                 <div class="col-xs-1">
+                                    <label for="volatility_sigma"  lang="latex">\sigma_v</label>
+                                    <input class="form-control" id="volatility_sigma" name="volatility_sigma"
+                                           value="{{ param.volatility_sigma }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                </div>
+                                <div class="col-xs-1">
+                                    <label for="market_volatility"  lang="latex">\sigma_m</label>
+                                    <input class="form-control" id="market_volatility" name="market_volatility"
+                                           value="{{ param.market_volatility }}">
+                                </div>
+                                <div class="col-xs-1">
+                                    <label for="maturity">b</label>
+                                    <input class="form-control" id="b" name="b"
+                                           value="{{ param.b }}" onchange="addInput()"  pattern="([0-9]+\.)?[0-9]+" >
+                                </div>
+                                 <div class="col-xs-1">
+                                    <label for="correlation_stock_volatility" lang="latex">\rho_{sv}</label>
+                                    <input class="form-control" id="correlation_stock_volatility" name="correlation_stock_volatility"
+                                           value="{{ param.correlation_stock_volatility }}"  pattern="([0-9]+\.)?[0-9]+" >
+                                </div>
+                                <div class="col-xs-1">
+                                    <label for="correlation_stock_market" lang="latex">\rho_{sm}</label>
+                                    <input class="form-control" id="correlation_stock_market" name="correlation_stock_market"
+                                           value="{{ param.correlation_stock_market }}" onchange="addInput()" onkeypress="return isNumberKey(event)">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row" style="margin: 20px">
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-block  btn-primary" id="exampleInputEmail1"/>
+                        </div>
+                         <div class="col-md-6">
+                            <input type="submit" class="btn btn-block  btn-primary" id="volatiltiy"/>
+                        </div>
+                    </div>
+                    <div lang="latex">
+
+</div>
+                </div>
+            </form>
+
+
+<div class="row" style=" margin: 1%; padding: 10px;border: 1px solid #8c8c8c;min-height: 15cm;overflow-x: scroll">
+
+        <div style="display: flex; justify-content: center;">{{ graph|safe }}</div>
+
+    </div>
+
+    <div class="row" style=" margin: 1%; padding: 1px;overflow-y: scroll;min-height: 15cm">
+
+        <table cellpadding="5" class="table table-bordered table-hover table-condensed">
+           <th>Price</th>
+            <th>Standard Error</th>
+            <th>Price</th>
+            <th>Standard Error</th>
+            <th>Price</th>
+            <th>Standard Error</th>
+        </table>
+
+
+    </div>
+
+
+{% endblock %}
+
+
